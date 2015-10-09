@@ -1,0 +1,3151 @@
+copy ipk file into the SD card
+opkg install <>.ipk
+cd /opt/cln/bin
+
+
+./storage-test.sh -t test_name
+
+Available tests:
+.driver_01_load
+.driver_05_unload
+.driver_16_load_stress
+.memory_02_add
+.memory_06_rawread
+.memory_07_mount
+.memory_08_write 
+
+/dev/null ??? /dev/zero ?????
+
+redirected to http://www.tldp.org/LDP/lkmpg/2.4/html/c854.htm
+
+SPI flash ????
+low-density (1-megabit (Mb) to 16 Mb) NOR Flash which is 
+
+1.6 Referenced Documents ???
+idem ??
+quirks ???
+ACPI sub-system ??
+
+==> The Silicon Validation Platform will have a boot time switch to enable either the eMMC or the SD/MMCplus socket (mutually exclusive)
+
+hardware limitations will restrict it to 2.0 capabilities: no low voltage, 52MHz maximum clock and no DDR. ???
+
+QSD_ATF RUNNING
+===============  
+change port = /dev/ttyS0 in /home/dharma/Videos/IOT_Automation/g/QSD_atf/qsd_atf_env/qsd_atf_core/qsd_conf
+
+sudo python executeTestCase.py -t /home/dharma/Videos/sdcard.py -p x1000_generic -n .driver_01_load
+(or )
+copy /home/dharma/Videos/sdcard.py to <Root>/QSD_atf/qsd_atf_env/test_scripts/x1000
+sudo python executeTestCase.py -t sdcard.py -p x1000_generic -n .driver_01_load
+
+Note:install css*.ipk and close the minicom/serial terminal
+
+test logs (pc terminal+ target terminal logs)
+=======================
+/home/dharma/Videos/IOT_Automation/g/QSD_atf/qsd_atf_env/test_logs/sdcard/
+
+syslogs(only info related to arguments ...etc)
+=======
+/home/dharma/Videos/IOT_Automation/g/QSD_atf/qsd_atf_env/test_logs/syslogs
+
+==> modprobe mmc-block
+
+==> echo -n "S3" > /sys/power/state
+
+==> date -s '2015-7-29 18:44:56' -- to set date & time	
+
+Theory
+======
+microSD memory cards are available in capacities up to 64 GB and in various speed grades. High performance SD memory products are usually based on the UHS-I interface and currently deliver up to 533X speeds. This is based on single-speed CD ROM throughput of 150 kB/s and means a maximum throughput of 80 MB/s to or from the microSD memory card. We use a Core i5-2400 on a Gigabyte Z77 G1.Sniper M3 and SanDisk's USB 3.0 card reader Image Mate All-In-One to check these performance statements. SD memory cards below 32 GB are usually based on the SDHC specification, while larger capacities require SDXC. Please check your SD card readers or devices if these can support SDXC
+
+"dd" tool used to copy large data & complete data from one drive to another
+
+dd if=<input-file-name> of=<output-file-name> bs=<block-size> count=<no. of such bllocks to be transferred>
+EX: sudo dd if=/dev/sdb of=/dev/sdc bs=1024 count=5 ==>copy sdb data to sdc with each block size=1024 and copy count=5 such blocks
+sudo dd if=/dev/sdb of=/home/<$user-name>/<name>.img
+
+
+
+To test Through-put using iozone
+================================
+$ ./iozone -i 0 -t 2
+
+drivers loaded by default at target (galileo)
+==============================================
+root@clanton:~# lsmod | grep sd
+sdhci_pci 18191 0 - Live 0xd2773000
+sdhci 27440 1 sdhci_pci, Live 0xd277b000
+mmc_core 92969 3 mmc_block,sdhci_pci,sdhci, Live 0xd278e000
+led_class 13282 1 sdhci, Live 0xd2725000
+
+
+
+Making a bootable micro SD Card with Linux*
+===========================================
+https://software.intel.com/en-us/programming-blank-sd-card-with-yocto-linux-image-linux
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/card$ ls
+mmc_block.ko
+.............
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/core$ ls
+mmc_core.ko
+.............
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/host$ ls
+sdhci.ko  sdhci-pci.ko  sdhci-pltfm.ko
+.......................................
+
+
+/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/sysroots/quark/usr/src/kernel/drivers/mmc
+
+In above path only headers are present ==> no .c files ==> because it is included in the file-system of yocto linux image and image only has executables,libraries and driver modules I guess
+
+path to sources of mmc
+=======================
+/home/dharma/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc
+
+
+ 
+-->sdhci should be the interface between processor and memory card
+
+--> mmc_core.ko and mmc_block.ko are generic mmc layer above [sdhci.ko  sdhci-pci.ko  sdhci-pltfm.ko]
+
+Acronyms & Definitions
+HSMMC Driver: Acronyms
+Acronym	Definition
+MMC	Multimedia Card
+HS-MMC	High Speed MMC
+SD	Secure Digital
+SDHC	SD High Capacity
+SDIO	SD Input/Output
+
+
+Features
+Uses block bounce buffer to aggregate scattered blocks	????
+
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc$ grep -RnHi "register_blkdev" ./
+./card/block.c:1974:	res = register_blkdev(MMC_BLOCK_MAJOR, "mmc");
+./card/block.c:1984:	unregister_blkdev(MMC_BLOCK_MAJOR, "mmc");
+./card/block.c:1992:	unregister_blkdev(MMC_BLOCK_MAJOR, "mmc");
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc$ grep -RnHi "block_device_operations" ./
+./card/block.c:574:static const struct block_device_operations mmc_bdops = {
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc$ grep -RnHi "request_queue" ./
+./card/queue.h:32:	struct request_queue	*queue;
+./card/queue.c:30:static int mmc_prep_request(struct request_queue *q, struct request *req)
+./card/queue.c:53:	struct request_queue *q = mq->queue;
+./card/queue.c:102:static void mmc_request_fn(struct request_queue *q)
+./card/queue.c:134:static void mmc_queue_setup_discard(struct request_queue *q,
+./card/queue.c:298:	struct request_queue *q = mq->queue;
+./card/queue.c:347:	struct request_queue *q = mq->queue;
+./card/queue.c:367:	struct request_queue *q = mq->queue;
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc$ grep -RnHi "sector_t" ./
+./card/block.c:1522:					      sector_t size,
+./card/block.c:1639:	sector_t size;
+./card/block.c:1664:		
+
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc$ grep -RnHi "alloc_disk" ./
+./card/block.c:1562:	md->disk = alloc_disk(perdev_minors);
+
+	==>allocates minor no.s to all the SD cards inserted and if device is partitioned minor no. allocated to each partition
+
+Fields major, first_minor, fops, disk_name and queue should 
+at the minimum be initialized
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc$ grep -RnHi "disk_name" ./
+./card/block.c:217:		pr_err("%s: Locking boot partition ro until next power on failed: %d\n", md->disk->disk_name, ret);
+./card/block.c:225:			md->disk->disk_name);
+./card/block.c:230:				pr_info("%s: Locking boot partition ro until next power on\n", part_md->disk->disk_name);
+./card/block.c:708:			req->rq_disk->disk_name, "response CRC error",
+./card/block.c:714:			req->rq_disk->disk_name, "timed out", name, status);
+./card/block.c:734:		       req->rq_disk->disk_name, error, status);
+./card/block.c:779:		       req->rq_disk->disk_name, err, retry ? "retry" : "abort");
+./card/block.c:805:			       req->rq_disk->disk_name, err);
+./card/block.c:833:	       req->rq_disk->disk_name, brq->stop.error,
+./card/block.c:1091:		       req->rq_disk->disk_name, brq->cmd.resp[0]);
+./card/block.c:1109:				       req->rq_disk->disk_name, err);
+./card/block.c:1119:					req->rq_disk->disk_name, __func__);
+./card/block.c:1134:		       req->rq_disk->disk_name, brq->data.error,
+./card/block.c:1359:					req->rq_disk->disk_name);
+./card/block.c:1425:					   req->rq_disk->disk_name);
+./card/block.c:1601:	snprintf(md->disk->disk_name, sizeof(md->disk->disk_name),
+./card/block.c:1682:	       part_md->disk->disk_name, mmc_card_id(card),
+./card/block.c:1881:		md->disk->disk_name, mmc_card_id(card), mmc_card_name(card),
+
+other functions
+===============
+set_capacity
+add_disk
+mmc_allocate_host
+mmc_add_host
+mmc_host_ops
+
+
+cameras can take photos faster than they can write them to storage hence temporarily stores image data in buffer
+what if continuos (burst) imgaes are taken....Hence write speed need to be more
+
+write speed of SD card more important than read speed
+
+SD cards are more durable(able to withstand long) than other storage solutions such as hard drives, and they can survive being bumped around and dropped.
+
+
+ (Device Size)—computes the card capacity. The memory capacity of the card 
+is computed from the entries C_SIZE, C_SIZE_MULT and READ_BL_LEN as 
+follows: 
+memory capacity = BLOCKNR * BLOCK_LEN
+Where: 
+ BLOCKNR = (C_SIZE+1) * MULT 
+ MULT = 2C_SIZE_MULT+2 (C_SIZE_MULT < 8) 
+ BLOCK_LEN = 2READ_BL_LEN (READ_BL_LEN < 12) 
+Therefore, the maximum capacity that can be coded is 4096*512*2048=4 GB. For 
+example, a 4-MB card with BLOCK_LEN = 512 can be coded with C_SIZE_MULT = 
+0 and C_SIZE = 2047. 
+
+i.e;
+memory capacity = ((C_SIZE+1) * MULT)*(2READ_BL_LEN (READ_BL_LEN < 12))
+
+		
+
+
+
+reference:http://cdn.sparkfun.com/datasheets/Components/General/SDSpec.pdf
+
+
+
+Operation Conditions Register (OCR)
+	Shows the voltage range in which the card data can be accessed
+CCC Card Command Classes Register
+	A value of “1” in a CCC bit means that the corresponding command class is supported
+	ex: class-0,class-1....class-11
+
+
+/*
+ * We've only got one major, so number of mmcblk devices is
+ * limited to 256 / number of minors per device		
+
+SD stands for Secure Digital. SDHC? Secure Digital High Capacity. And SDXC? Secure Digital eXtended Capacity
+
+SD(Secure Digital)	<4Gb
+SDHC(SD High Capacity)  4Gb to 32 Gb
+SDXC(SD extended capacity) > 32Gb
+
+types
+SD	ex:used in DSLR(Digital Single Lens Reflex) Camera
+miniSD
+microSD
+
+The current SDHC specification defines Class 2, 4, 6, 8 and 10 as follows:
+
+minimumspeed
+
+
+The Intel® QuarkTM SoC X1000 provides an SDIO/SD/eMMC controller that supports a
+single port configurable as:
+• One SDIO 3.0 interface
+• One SD 3.0 interface
+• One eMMC 4.41 interface
+
+SD card speed default: 0 to 25 MHz	
+SD card High speed mode: 0 to 50 Mhz
+
+sd.c has all the registers specific to your sd card (ex:OCR,CID,RCA... )
+
+struct mmc_host is defined in linux-yocto-quark/3.8-r0/linux/include/linux/mmc/host.h
+
+SD card registers
+=================
+CID: card identification register
+CSD: card specific data register(and this different for diff. types of SD cards) 
+	(The host can read the CSD Register and alter the host-controlled data bytes using the
+		SEND_CSD and PROGRAM_CSD commands)
+all the data specific to the SD card is present in this structure for example 
+1.Max. data transfer rate (def:25 Mhz max:50Mhz)
+2.Max. read data block length(upto 1 GB)
+3.Device size(C_SIZE)==> C_SIZE find inside CSD register
+4.C_SIZE_MULT...
+....
+....
+....etc 
+SSR & CSR(SD-card status register & card status register): status registers 
+
+
+
+ cat /sys/class/mmc_host/mmc0/mmc0:59b4/csd
+		4 0 0 e 0 0 3 2 5 b 5 9 0 0 0 0 1 d f d 7 f 8 0 0 a 4 0 0 0 0 0
+
+i.e;
+
+400e00325b5900001dfd7f800a400000
+
+
+throughput related problem
+============================
+http://unix.stackexchange.com/questions/118554/dd-command-finding-read-write-throughput-of-a-flash-sd
+
+		As suggested here , I am doing like this:
+
+		root@Xilinx-ZC702-14_7:/dev# echo 1 > /proc/sys/vm/drop_caches
+		root@Xilinx-ZC702-14_7:/dev# dd if=/dev/mtd2 of=/dev/null bs=128k count=200
+		84+0 records in
+		84+0 records out
+		But as per the above link it should also print the following lines:
+
+		26214400 bytes (25.0MB) copied, 5.971374 seconds, 4.2MB/s
+		That gives an idea of rate at which flash working.
+
+		Why is this line missing in my case? Is there any alterantive to know this rate ?
+
+
+sol:
+====
+			Showing the throughput rate is a feature of the version of dd from GNU coreutils which is found on non-embedded Linux. PetaLinux uses the BusyBox utility suite, and its dd does not have this feature.
+
+			You can use the time utility to measure the total time, and divide the amount of data by that figure. Unfortunately BusyBox's time utility is cumbersome to parse.
+
+			bytes=$((128*200*1024))
+			time head -c $bytes 2>&1 |
+			awk -F '[^.0-9]+' -v bytes=$bytes '
+			    /^sys\t[0-9]*m [0-9.]*s$/ {
+				sys_time = $1 * 60 + $2;
+			    }
+			    {print}
+			    END {printf "Throughput: %f MB/s\n", bytes / 1048576.0 / sys_time}'
+
+
+
+latency and throughput
+==========================
+dd if=/dev/zero of=/home/dharma/Videos/nay/test.file
+^C1374953+0 records in
+1374953+0 records out
+703975936 bytes (704 MB) copied, 7.25933 s, 97.0 MB/s
+
+latency = 7.25933 s
+throughput = 97.0 MB/s
+
+
+awk
+====
+echo "a b c d e" | awk '{print "arg0="$0}{print "arg1="$1}{print "arg2="$2}{print "arg3="$3}{print "arg4="$4}{print "arg5="$5}'
+
+default field seperator is space 
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ time
+
+real	0m0.000s
+user	0m0.000s
+sys	0m0.000s
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ time ./trial 1 2
+In trial.c
+argc=3
+real	0m0.001s
+user	0m0.000s
+sys	0m0.000s
+
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024
+1024+0 records in
+1024+0 records out
+real    0m 0.06s
+user    0m 0.02s
+sys     0m 0.04s
+
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 |
+ awk '/real/'
+1024+0 records in
+1024+0 records out
+real    0m 0.06s
+user    0m 0.00s
+sys     0m 0.05s
+
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2>&1 | awk '/real/{print $0}'
+real    0m 0.06s
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{print $1}'
+real
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{print $2}'
+0m
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{print $3}'
+0.06s
+
+
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{sys_time=($2*60+$3);print sys_time}'
+0.06
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{sys_time=($2*60+$3);print sys_time;tp=(1024*1024/sys_time)}'
+0.06
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{sys_time=($2*60+$3);print sys_time;tp=(1024*1024/sys_time);pri
+nt tp;}'
+0.06
+1.74763e+07
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{sys_time=($2*60+$3);print sys_time;tp=(1024*1024/sys_time);pri
+nt "throughput=%f MB/S"tp;}'
+
+/*working write throughput test*/
+
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{sys_time=($2*60+$3);print sys_time;tp=(1024*1024/sys_time);pri
+nt "WRITE THROUGHPUT="tp "\tMbps";}'
+0.06
+THROUGHPUT=1.74763e+07  Mbps
+
+NOTE:In above of=/dev/sda or of=/dev/sda2 but doing this leads to replacing of entire data on sda or sda2 respectively with present data 
+Hence write to a file ==> slow data rate coz of extra meta-data copied
+
+/*working read throughput test*/
+
+root@clanton:~# time dd if=/home/root/test.img of=/dev/zero bs=1024 count=1024 2
+>&1 | awk '/real/{sys_time=($2*60+$3);print sys_time;tp=(1024*1024/sys_time);pri
+nt "READ THROUGHPUT="tp "\tMbps";}'
+
+/*working write throughput test with conversion*/
+==================================================
+
+root@clanton:~# time dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 2
+>&1 | awk '/real/{sys_time=($2*60+$3);print sys_time;tp=(1024*1024/sys_time);pri
+nt "WRITE THROUGHPUT="tp "\tMbps";  print tpf=tp/1000000; print "WRITE THROUGHPU
+T="tpf"\tMB/S";}'
+0.06
+WRITE THROUGHPUT=1.74763e+07    Mbps
+17.4763
+WRITE THROUGHPUT=17.4763        MB/S
+
+
+root@clanton:/media/mmcblk0p1# time dd if=/dev/zero of=/media/mmcblk0p1/test.img
+ bs=1024 count=10 2>&1 | awk '/real/{sys_time=($2*60+$3);print sys_time;tp=(1024
+*10/sys_time);print "WRITE THROUGHPUT="tp "\tbps";  print tpf=tp/1000000; prin
+t "WRITE THROUGHPUT="tpf"\tMB/S";}'
+0.17
+WRITE THROUGHPUT=6.16809e+06    bps
+6.16809
+WRITE THROUGHPUT=6.16809        MB/S
+
+
+IOZONE
+========
+./iozone -i 0 ==>write test
+./iozone -i 1 ==> Read test
+./iozone -i 0 -t 2 ==> throughput
+
+Reference::: http://www.thegeekstuff.com/2011/05/iozone-examples/
+
+GAPS
+====
+Requirement Id's 2,4,6,7,8 has no test cases ==> 2 & 4 are SDIO's spec. compliance, 6=>SDIO wifi , 7=>SDIO bluetooth, 8==>combo card 
+
+Requirement Id's 9,10,11 "out of scope" since eMMc
+
+
+hardware requirement
+=====================
+SD cards of different class
+SDIO bluetooth
+SDIO wifi
+SDIO combo(both memory and I/O(wifi,bluetooth...etc)) card	
+
+
+microSD communication is based on an advanced 9 and 8-pin interface (SD:9pin, microSD:8pin) designed to operate at maximum operating frequency of 208MHz and 2.7V ~ 3.6V voltage range with 2 Type signaling (1.8V & 3.3V)*
+
+Clanton uses host-controller from the manufacturer "Arasan"
+============================================================
+https://arasan.com/wp-content/media/SD3.0_SDIO3.0_eMMC4.5_-Host-Controller_Datasheet_Rev2011.pdf
+
+Intel On-Chip System Fabric (IOSF)
+
+The interconnect fabric will serve as a “chassis” within which a variety Intel and third-party IP can be swapped in and out for different applications. The company calls this proprietary chassis the Intel On-Chip System Fabric (IOSF). It is analogous to the ARM’s community Advanced Microcontroller Bus Architecture (AMBA) interconnect platform.
+
+Intel’s Atom processor uses the PCI bus to connect to the outside world
+
+
+eMMC memory down ??
+
+Host controller must be capable of controlling SD,eMMC,mmc,SPI for SDIO(wifi,bluetooth)
+eMMC in-built on SOC whereas slot for SD to connect different types of mmc cards
+when eMMC is active SD slot is In-active and vice-versa
+
+no low voltage, 52MHz maximum clock and no DDR.==> Here SD3.0 but follows SPECS of SD 2.0 ??
+
+
+
+Requirement-4
+===============
+CLN.F.HW.SC.IO.SDIO.4 
+Requirement : SD3.0/SDIO3.0/eMMC4.41 specification compliance with the exceptions of:
+Low-voltage support
+Ultra-High Speed (UHS) modes support
+
+eMMC --> out of scope
+
+ Arasan has demonstrated its SD 3.0 Hardware Validation Platform (HVP) running at more than 90MB/s sustained read and more than 70MB/s sustained write using a Linux storage device benchmark.
+
+SD host Controller simplified specificatons 3.0
+================================================
+https://www.sdcard.org/downloads/pls/simplified_specs/partA2_300.pdf
+
+SDIO 3.0 simplified SPEcifications
+===================================
+https://www.sdcard.org/downloads/pls/partE1_300.pdf
+
+SDIO is based on the Physical Layer Specification
+
+Physical Layer Specification
+=============================
+https://www.sdcard.org/downloads/pls/part1_410.pdf
+
+=>The SDIO Specification defines an SD card that may contain interfaces between various I/O units and an SD Host.
+
+==>High and Extended Capacity SD Memory Cards shall support Speed Class Specification and have 
+performance more than or equal to Class 2
+==>the maximum SD Bus speed is specified by the maximum SD clock frequency (25 [MB/sec] = 25000000 [Byte/sec] at 50 MHz)
+
+what is SD mode and SPI mode ??
+
+UHS-I Card Operation Modes
+• DS - Default Speed up to 25MHz 3.3V signaling
+• HS - High Speed up to 50MHz 3.3V signaling
+• SDR12 - SDR up to 25MHz 1.8V signaling
+• SDR25 - SDR up to 50MHz 1.8V signaling
+• SDR50 - SDR up to 100MHz 1.8V signaling
+• SDR104 - SDR up to 208MHz 1.8V signaling
+• DDR50 - DDR up to 50MHz 1.8V signaling
+Note: 1.8V signal timings are different from those of 3.3V
+
+
+ The first CMD0 selects the bus mode; SD mode or SPI mode ??? what are these modes ???
+
+==>	All communication between host and cards is controlled by the host (master)
+
+RCA ???????? ==> RCA ==  Relative Card Address (RCA)==> When host is in card identification mode asks each card to send their RCA for Identification
+
+==>Card Lock/Unlock Operation ???	
+
+testcase
+========
+==>The host should check the "SD_SPEC" field in the SCR register to identify what version of the spec the card complies with before using CMD6 ==> can develop a new test-case to check version of specs supported by host *****
+
+status::done
+
+
+Bluetooth HCI (Host controller interface) on SDIO driver should be handled by btsdio.ko
+btsdio.ko
+=========
+
+
+which version of linux kernel starts to support sd/sdio version 3.00
+=====================================================================
+http://stackoverflow.com/questions/16100765/which-version-of-linux-kernel-starts-to-support-sd-sdio-version-3-00
+
+
+--> Cards that comply with UHS show Roman numerals 'I' or 'II' next to the SD card logo
+--> SDIO devices/cards can use the SD slot to support GPS receivers, modems, barcode readers, FM radio tuners, TV tuners, RFID readers, digital cameras, and interfaces to Wi-Fi, Bluetooth, Ethernet, and IrDA. 
+Many other SDIO devices have been proposed, but it is now more common for I/O devices to connect using the USB interface.
+
+--> Host devices built for SDIO cards generally accept SD memory cards without I/O functions whereas Host devices built for SD does not support SDIO i.e SDIO host controller supprots SD but SD host controller does not support SDIO	` 
+
+--> All SD card families initially use a 3.3 volt electrical interface. On command, SDHC and SDXC cards switch to 1.8 V operation.[21]
+-->  Until determining the card's capabilities, the host device should not use a clock speed faster than 400 kHz.
+--> SDIO card as a "combo card" (means for both memory and I/O)
+--> The SD protocol envisioned the ability to gang 30 cards together without separate chip select lines. The host device would broadcast commands to all cards and identify the card to respond to the command using its unique serial number.n practice, cards are rarely ganged together because open-collector operation has problems at high speeds and increases power consumption. Newer versions of the SD specification recommend separate lines to each card.
+
+-->Aim always for faster clock frequencies and faster data rate but with faster clock frequencies power consumption increases
+
+--> Reformatting an SD card with a different file system, or even with the same one, may make the card slower, or shorten its lifespan. Some cards use wear leveling, in which frequently modified blocks are mapped to different portions of memory at different times, and some wear-leveling algorithms are designed for the access patterns typical of FAT12, FAT16 or FAT32 ==> Hence use SD formatter tool
+
+MMC A to Z basics 
+==================
+http://elm-chan.org/docs/mmc/mmc_e.html
+
+
+==> MMC/SDC can work at the clock frequency upto 20/25 MHz. Of course all native interfaces guarantee to work at the maximum clock frequency. However generic SPI interface integrated in the microcontrollers may not work at high clock frequency due to a timing issue
+
+==> Most MMC/SDC employs NAND Flash Memory as a memory array
+==> SD Association started by Panasonic,toshiba and Sanddisk
+
+==> check documentation of Physical layer test guideline and protocol test guideline
+
+==> SD cards are used in cameras and video cameras where they sequentially read and write large file sizes. But a computer uses random read/write access and the file sizes are typically very much smaller
+
+==>  sd_send_cmd_get_rsp()
+
+---------------------------------------------------------------------------------------------------------------------------------------
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/host$ readelf -a sdhci-pltfm.ko | grep FUNC
+     9: 00000370    15 FUNC    LOCAL  DEFAULT    2 sdhci_pltfm_resume
+    10: 00000380    15 FUNC    LOCAL  DEFAULT    2 sdhci_pltfm_suspend
+    11: 00000000    20 FUNC    LOCAL  DEFAULT    4 sdhci_pltfm_drv_init
+    12: 00000000     5 FUNC    LOCAL  DEFAULT    6 sdhci_pltfm_drv_exit
+    40: 00000300    53 FUNC    GLOBAL DEFAULT    2 sdhci_pltfm_register
+    44: 00000000     5 FUNC    GLOBAL DEFAULT    6 cleanup_module
+    47: 00000000    20 FUNC    GLOBAL DEFAULT    4 init_module
+    49: 00000280   113 FUNC    GLOBAL DEFAULT    2 sdhci_pltfm_free
+    52: 00000340    46 FUNC    GLOBAL DEFAULT    2 sdhci_pltfm_unregister
+    59: 00000000     5 FUNC    GLOBAL DEFAULT    2 sdhci_get_of_property
+    61: 00000010   618 FUNC    GLOBAL DEFAULT    2 sdhci_pltfm_init
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/card$ readelf -a mmc_block.ko | grep FUNC
+     8: 00000000    11 FUNC    LOCAL  DEFAULT    2 add_quirk
+     9: 00000010    21 FUNC    LOCAL  DEFAULT    2 add_quirk_mmc
+    10: 00000030    27 FUNC    LOCAL  DEFAULT    2 mmc_blk_getgeo
+    11: 00000050    86 FUNC    LOCAL  DEFAULT    2 mmc_blk_resume
+    12: 000000b0    78 FUNC    LOCAL  DEFAULT    2 mmc_blk_suspend
+    13: 00000100   114 FUNC    LOCAL  DEFAULT    2 mmc_blk_put
+    17: 00000180   114 FUNC    LOCAL  DEFAULT    2 mmc_blk_remove_req
+    18: 00000200    42 FUNC    LOCAL  DEFAULT    2 mmc_blk_release
+    20: 00000230   327 FUNC    LOCAL  DEFAULT    2 mmc_sd_num_wr_blocks
+    21: 00000380  1049 FUNC    LOCAL  DEFAULT    2 mmc_blk_rw_rq_prep
+    22: 00000c00  1110 FUNC    LOCAL  DEFAULT    2 mmc_blk_err_check
+    23: 000007a0   245 FUNC    LOCAL  DEFAULT    2 mmc_add_disk
+    24: 00000a50    85 FUNC    LOCAL  DEFAULT    2 force_ro_show
+    25: 00000b30   102 FUNC    LOCAL  DEFAULT    2 force_ro_store
+    26: 00000a00    77 FUNC    LOCAL  DEFAULT    2 power_ro_lock_show
+    27: 00001060   301 FUNC    LOCAL  DEFAULT    2 power_ro_lock_store
+    28: 000008a0   179 FUNC    LOCAL  DEFAULT    2 mmc_blk_cmd_error.isra.16
+    29: 00000960    86 FUNC    LOCAL  DEFAULT    2 mmc_blk_remove_parts.isra
+    31: 000009c0    60 FUNC    LOCAL  DEFAULT    2 mmc_blk_get.isra.20
+    32: 00000ab0   125 FUNC    LOCAL  DEFAULT    2 mmc_blk_open
+    33: 00000ba0    91 FUNC    LOCAL  DEFAULT    2 get_card_status.isra.21
+    35: 00001190   231 FUNC    LOCAL  DEFAULT    2 mmc_blk_reset
+    36: 00001280   892 FUNC    LOCAL  DEFAULT    2 mmc_blk_issue_rw_rq
+    38: 00001600  1205 FUNC    LOCAL  DEFAULT    2 mmc_blk_issue_rq
+    39: 00001ac0   193 FUNC    LOCAL  DEFAULT    2 mmc_blk_remove
+    40: 00001b90   794 FUNC    LOCAL  DEFAULT    2 mmc_blk_alloc_req
+    43: 00001eb0   770 FUNC    LOCAL  DEFAULT    2 mmc_blk_probe
+    45: 000021c0  1330 FUNC    LOCAL  DEFAULT    2 mmc_blk_ioctl_cmd
+    47: 00002700    30 FUNC    LOCAL  DEFAULT    2 mmc_blk_ioctl
+    48: 00000000   113 FUNC    LOCAL  DEFAULT    4 mmc_blk_init
+    50: 00000000    30 FUNC    LOCAL  DEFAULT    6 mmc_blk_exit
+    58: 00002720   211 FUNC    LOCAL  DEFAULT    2 mmc_queue_thread
+    59: 00002800    79 FUNC    LOCAL  DEFAULT    2 mmc_prep_request
+    60: 00002850    94 FUNC    LOCAL  DEFAULT    2 mmc_request_fn
+    61: 000028b0    69 FUNC    LOCAL  DEFAULT    2 mmc_alloc_sg
+    78: 00002900  1359 FUNC    GLOBAL DEFAULT    2 mmc_init_queue
+    82: 00002e80    46 FUNC    GLOBAL DEFAULT    2 mmc_queue_resume
+    91: 00000000    30 FUNC    GLOBAL DEFAULT    6 cleanup_module
+    98: 00002e50    46 FUNC    GLOBAL DEFAULT    2 mmc_queue_suspend
+    99: 00000000   113 FUNC    GLOBAL DEFAULT    4 init_module
+   117: 00003070    68 FUNC    GLOBAL DEFAULT    2 mmc_queue_bounce_post
+   134: 00003020    68 FUNC    GLOBAL DEFAULT    2 mmc_queue_bounce_pre
+   155: 00002f90   144 FUNC    GLOBAL DEFAULT    2 mmc_queue_map_sg
+   156: 00002eb0   213 FUNC    GLOBAL DEFAULT    2 mmc_cleanup_queue
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/core$ readelf -a mmc_core.ko | grep FUNC
+     8: 000001e0   326 FUNC    LOCAL  DEFAULT    2 mmc_mmc_erase_timeout
+     9: 000004c0    90 FUNC    LOCAL  DEFAULT    2 mmc_wait_for_req_done
+    10: 00000520    13 FUNC    LOCAL  DEFAULT    2 mmc_wait_done
+    11: 00000530    75 FUNC    LOCAL  DEFAULT    2 __mmc_set_clock
+    13: 000009f0   282 FUNC    LOCAL  DEFAULT    2 __mmc_start_req
+    15: 00000c70   358 FUNC    LOCAL  DEFAULT    2 mmc_do_hw_reset
+    16: 00001280   125 FUNC    LOCAL  DEFAULT    2 mmc_power_off.part.29
+    17: 000013c0   428 FUNC    LOCAL  DEFAULT    2 mmc_do_calc_max_discard
+    19: 00001d40   199 FUNC    LOCAL  DEFAULT    2 mmc_power_up
+    21: 00000000   130 FUNC    LOCAL  DEFAULT    4 mmc_init
+    22: 00000000    30 FUNC    LOCAL  DEFAULT    6 mmc_exit
+   109: 00002a20    10 FUNC    LOCAL  DEFAULT    2 mmc_bus_match
+   110: 00002a30    14 FUNC    LOCAL  DEFAULT    2 mmc_bus_probe
+   111: 00002a40    16 FUNC    LOCAL  DEFAULT    2 mmc_bus_remove
+   112: 00002a50    35 FUNC    LOCAL  DEFAULT    2 mmc_bus_suspend
+   113: 00002a80    35 FUNC    LOCAL  DEFAULT    2 mmc_bus_resume
+   114: 00002ab0    12 FUNC    LOCAL  DEFAULT    2 mmc_runtime_idle
+   115: 00002ac0    13 FUNC    LOCAL  DEFAULT    2 mmc_runtime_resume
+   116: 00002ad0    13 FUNC    LOCAL  DEFAULT    2 mmc_runtime_suspend
+   118: 00002b20    39 FUNC    LOCAL  DEFAULT    2 mmc_release_card
+   119: 00002b50   119 FUNC    LOCAL  DEFAULT    2 mmc_bus_uevent
+   121: 00002bd0   130 FUNC    LOCAL  DEFAULT    2 mmc_type_show
+   130: 00002fd0    13 FUNC    LOCAL  DEFAULT    2 mmc_host_classdev_release
+   144: 00003280    18 FUNC    LOCAL  DEFAULT    2 mmc_alive
+   145: 000032a0    46 FUNC    LOCAL  DEFAULT    2 mmc_sleep
+   146: 000032d0    38 FUNC    LOCAL  DEFAULT    2 mmc_awake
+   147: 00003300   441 FUNC    LOCAL  DEFAULT    2 mmc_select_powerclass
+   148: 000034c0    35 FUNC    LOCAL  DEFAULT    2 mmc_rel_sectors_show
+   149: 000034f0    35 FUNC    LOCAL  DEFAULT    2 mmc_raw_rpmb_size_mult_sh
+   150: 00003520    34 FUNC    LOCAL  DEFAULT    2 mmc_enhanced_area_size_sh
+   151: 00003550    44 FUNC    LOCAL  DEFAULT    2 mmc_enhanced_area_offset_
+   152: 00003580    34 FUNC    LOCAL  DEFAULT    2 mmc_serial_show
+   153: 000035b0    35 FUNC    LOCAL  DEFAULT    2 mmc_oemid_show
+   154: 000035e0    33 FUNC    LOCAL  DEFAULT    2 mmc_name_show
+   155: 00003610    34 FUNC    LOCAL  DEFAULT    2 mmc_manfid_show
+   156: 00003640    35 FUNC    LOCAL  DEFAULT    2 mmc_hwrev_show
+   157: 00003670    35 FUNC    LOCAL  DEFAULT    2 mmc_fwrev_show
+   158: 000036a0    37 FUNC    LOCAL  DEFAULT    2 mmc_preferred_erase_size_
+   159: 000036d0    37 FUNC    LOCAL  DEFAULT    2 mmc_erase_size_show
+   160: 00003700    46 FUNC    LOCAL  DEFAULT    2 mmc_date_show
+   161: 00003730    64 FUNC    LOCAL  DEFAULT    2 mmc_csd_show
+   162: 00003770    64 FUNC    LOCAL  DEFAULT    2 mmc_cid_show
+   163: 000037b0    42 FUNC    LOCAL  DEFAULT    2 mmc_remove
+   164: 000037e0   300 FUNC    LOCAL  DEFAULT    2 mmc_get_ext_csd
+   165: 00003910   372 FUNC    LOCAL  DEFAULT    2 mmc_compare_ext_csds.part
+   166: 00003a90    95 FUNC    LOCAL  DEFAULT    2 mmc_detect
+   167: 00003af0   257 FUNC    LOCAL  DEFAULT    2 mmc_suspend
+   168: 00003c00  5610 FUNC    LOCAL  DEFAULT    2 mmc_init_card
+   178: 000051f0    66 FUNC    LOCAL  DEFAULT    2 mmc_power_restore
+   179: 00005240    68 FUNC    LOCAL  DEFAULT    2 mmc_resume
+   200: 00005470   108 FUNC    LOCAL  DEFAULT    2 mmc_send_cxd_native
+   201: 000054e0    83 FUNC    LOCAL  DEFAULT    2 _mmc_select_card
+   202: 00005540   575 FUNC    LOCAL  DEFAULT    2 mmc_send_bus_test.isra.8
+   205: 00005780   333 FUNC    LOCAL  DEFAULT    2 mmc_send_cxd_data
+   211: 00006230    96 FUNC    LOCAL  DEFAULT    2 sd_get_host_max_current
+   212: 00006290    34 FUNC    LOCAL  DEFAULT    2 mmc_serial_show
+   213: 000062c0    35 FUNC    LOCAL  DEFAULT    2 mmc_oemid_show
+   214: 000062f0    33 FUNC    LOCAL  DEFAULT    2 mmc_name_show
+   215: 00006320    34 FUNC    LOCAL  DEFAULT    2 mmc_manfid_show
+   216: 00006350    35 FUNC    LOCAL  DEFAULT    2 mmc_hwrev_show
+   217: 00006380    35 FUNC    LOCAL  DEFAULT    2 mmc_fwrev_show
+   218: 000063b0    37 FUNC    LOCAL  DEFAULT    2 mmc_preferred_erase_size_
+   219: 000063e0    37 FUNC    LOCAL  DEFAULT    2 mmc_erase_size_show
+   220: 00006410    46 FUNC    LOCAL  DEFAULT    2 mmc_date_show
+   221: 00006440    44 FUNC    LOCAL  DEFAULT    2 mmc_scr_show
+   222: 00006470    64 FUNC    LOCAL  DEFAULT    2 mmc_csd_show
+   223: 000064b0    64 FUNC    LOCAL  DEFAULT    2 mmc_cid_show
+   224: 000064f0    18 FUNC    LOCAL  DEFAULT    2 mmc_sd_alive
+   225: 00006510    42 FUNC    LOCAL  DEFAULT    2 mmc_sd_remove
+   226: 00006540    95 FUNC    LOCAL  DEFAULT    2 mmc_sd_detect
+   227: 000065a0    78 FUNC    LOCAL  DEFAULT    2 mmc_sd_suspend
+   232: 00006f80  1877 FUNC    LOCAL  DEFAULT    2 mmc_sd_init_card
+   233: 000076e0    63 FUNC    LOCAL  DEFAULT    2 mmc_sd_power_restore
+   234: 00007720    68 FUNC    LOCAL  DEFAULT    2 mmc_sd_resume
+   256: 000080d0    16 FUNC    LOCAL  DEFAULT    2 mmc_sdio_alive
+   257: 000080e0   378 FUNC    LOCAL  DEFAULT    2 mmc_sdio_suspend
+   258: 00008260   196 FUNC    LOCAL  DEFAULT    2 sdio_enable_wide
+   259: 00008330   117 FUNC    LOCAL  DEFAULT    2 sdio_enable_4bit_bus
+   260: 000083b0   160 FUNC    LOCAL  DEFAULT    2 mmc_sdio_switch_hs
+   261: 00008450  2659 FUNC    LOCAL  DEFAULT    2 mmc_sdio_init_card
+   263: 00008ec0   251 FUNC    LOCAL  DEFAULT    2 mmc_sdio_power_restore
+   264: 00008fc0   297 FUNC    LOCAL  DEFAULT    2 mmc_sdio_resume
+   265: 000090f0   114 FUNC    LOCAL  DEFAULT    2 mmc_sdio_remove
+   266: 00009170   169 FUNC    LOCAL  DEFAULT    2 mmc_sdio_detect
+   268: 00009630   265 FUNC    LOCAL  DEFAULT    2 mmc_io_rw_direct_host
+   269: 00009bf0     7 FUNC    LOCAL  DEFAULT    2 pm_no_operation
+   270: 00009c00   215 FUNC    LOCAL  DEFAULT    2 sdio_bus_remove
+   271: 00009ce0   164 FUNC    LOCAL  DEFAULT    2 sdio_bus_uevent
+   272: 00009d90    57 FUNC    LOCAL  DEFAULT    2 modalias_show
+   273: 00009dd0    35 FUNC    LOCAL  DEFAULT    2 device_show
+   274: 00009e00    35 FUNC    LOCAL  DEFAULT    2 vendor_show
+   275: 00009e30    35 FUNC    LOCAL  DEFAULT    2 class_show
+   277: 00009ea0    39 FUNC    LOCAL  DEFAULT    2 sdio_release_func
+   278: 00009ed0   100 FUNC    LOCAL  DEFAULT    2 sdio_match_device.isra.5
+   279: 00009f40    24 FUNC    LOCAL  DEFAULT    2 sdio_bus_match
+   280: 00009f60   231 FUNC    LOCAL  DEFAULT    2 sdio_bus_probe
+   288: 0000a170    76 FUNC    LOCAL  DEFAULT    2 cistpl_manfid
+   289: 0000a1c0    78 FUNC    LOCAL  DEFAULT    2 cistpl_funce_common
+   292: 0000a210   203 FUNC    LOCAL  DEFAULT    2 cis_tpl_parse
+   293: 0000a2e0    71 FUNC    LOCAL  DEFAULT    2 cistpl_funce
+   295: 0000a330   141 FUNC    LOCAL  DEFAULT    2 cistpl_funce_func
+   296: 0000a3c0   247 FUNC    LOCAL  DEFAULT    2 cistpl_vers_1
+   297: 0000a4c0   661 FUNC    LOCAL  DEFAULT    2 sdio_read_cis
+   301: 0000ad50   484 FUNC    LOCAL  DEFAULT    2 sdio_io_rw_ext_helper
+   344: 0000b3a0    90 FUNC    LOCAL  DEFAULT    2 sdio_single_irq_set
+   345: 0000b560   620 FUNC    LOCAL  DEFAULT    2 sdio_irq_thread
+   350: 0000b8e0    11 FUNC    LOCAL  DEFAULT    2 add_quirk
+   351: 0000b8f0    13 FUNC    LOCAL  DEFAULT    2 remove_quirk
+   352: 0000b900    24 FUNC    LOCAL  DEFAULT    2 add_quirk_for_sdio_device
+   356: 0000bab0   252 FUNC    LOCAL  DEFAULT    2 mmc_gpio_alloc
+   357: 0000bbb0    50 FUNC    LOCAL  DEFAULT    2 mmc_gpio_cd_irqt
+   370: 0000bd80    22 FUNC    LOCAL  DEFAULT    2 mmc_clock_opt_get
+   371: 0000bda0    33 FUNC    LOCAL  DEFAULT    2 mmc_clock_fops_open
+   372: 0000be00    82 FUNC    LOCAL  DEFAULT    2 mmc_clock_opt_set
+   373: 0000bdd0    33 FUNC    LOCAL  DEFAULT    2 mmc_dbg_card_status_fops_
+   374: 0000c210    67 FUNC    LOCAL  DEFAULT    2 mmc_dbg_card_status_get
+   375: 0000be60    27 FUNC    LOCAL  DEFAULT    2 mmc_ios_open
+   376: 0000be80   537 FUNC    LOCAL  DEFAULT    2 mmc_ios_show
+   382: 0000c0a0    15 FUNC    LOCAL  DEFAULT    2 mmc_ext_csd_release
+   383: 0000c0b0   304 FUNC    LOCAL  DEFAULT    2 mmc_ext_csd_open
+   384: 0000c1e0    41 FUNC    LOCAL  DEFAULT    2 mmc_ext_csd_read
+   403: 00002b00    17 FUNC    GLOBAL DEFAULT    2 mmc_unregister_driver
+   405: 0000ab60    26 FUNC    GLOBAL DEFAULT    2 sdio_release_host
+   407: 0000a850   139 FUNC    GLOBAL DEFAULT    2 sdio_disable_func
+   410: 0000a8e0   191 FUNC    GLOBAL DEFAULT    2 sdio_set_block_size
+   412: 00000450   101 FUNC    GLOBAL DEFAULT    2 mmc_request_done
+   414: 00002770    78 FUNC    GLOBAL DEFAULT    2 mmc_start_host
+   415: 00001c00    26 FUNC    GLOBAL DEFAULT    2 mmc_set_bus_mode
+   416: 0000c260   176 FUNC    GLOBAL DEFAULT    2 mmc_add_host_debugfs
+   418: 0000ab40    28 FUNC    GLOBAL DEFAULT    2 sdio_claim_host
+   419: 0000af40    38 FUNC    GLOBAL DEFAULT    2 sdio_memcpy_fromio
+   420: 00009e60    24 FUNC    GLOBAL DEFAULT    2 sdio_register_driver
+   421: 0000af70   141 FUNC    GLOBAL DEFAULT    2 sdio_readw
+   423: 00005f30   393 FUNC    GLOBAL DEFAULT    2 __mmc_switch
+   424: 00005de0    31 FUNC    GLOBAL DEFAULT    2 mmc_send_ext_csd
+   427: 00005d10   203 FUNC    GLOBAL DEFAULT    2 mmc_send_cid
+   429: 00001570   120 FUNC    GLOBAL DEFAULT    2 mmc_calc_max_discard
+   430: 00001cb0   137 FUNC    GLOBAL DEFAULT    2 mmc_set_signal_voltage
+   431: 00007d70   333 FUNC    GLOBAL DEFAULT    2 mmc_app_send_scr
+   432: 00007bc0   193 FUNC    GLOBAL DEFAULT    2 mmc_send_app_op_cond
+   434: 00000330    45 FUNC    GLOBAL DEFAULT    2 mmc_can_erase
+   435: 00005900   263 FUNC    GLOBAL DEFAULT    2 mmc_card_sleepawake
+   436: 00006140   228 FUNC    GLOBAL DEFAULT    2 mmc_send_hpi_cmd
+   438: 0000a800    79 FUNC    GLOBAL DEFAULT    2 sdio_free_func_cis
+   439: 0000bce0    78 FUNC    GLOBAL DEFAULT    2 mmc_gpio_free_cd
+   441: 00000000    30 FUNC    GLOBAL DEFAULT    6 cleanup_module
+   442: 000020d0   125 FUNC    GLOBAL DEFAULT    2 mmc_detach_bus
+   445: 00005290   471 FUNC    GLOBAL DEFAULT    2 mmc_attach_mmc
+   446: 00001250    44 FUNC    GLOBAL DEFAULT    2 mmc_can_reset
+   447: 0000c320   248 FUNC    GLOBAL DEFAULT    2 mmc_add_card_debugfs
+   448: 00000df0    15 FUNC    GLOBAL DEFAULT    2 mmc_hw_reset_check
+   452: 00007b40   113 FUNC    GLOBAL DEFAULT    2 mmc_app_set_bus_width
+   453: 0000b0c0    64 FUNC    GLOBAL DEFAULT    2 sdio_writew
+   454: 000003f0    44 FUNC    GLOBAL DEFAULT    2 mmc_erase_group_aligned
+   455: 00002fe0    53 FUNC    GLOBAL DEFAULT    2 mmc_remove_host
+   457: 0000b090    43 FUNC    GLOBAL DEFAULT    2 sdio_memcpy_toio
+   460: 00001e10   180 FUNC    GLOBAL DEFAULT    2 mmc_power_restore_host
+   463: 00005e00    80 FUNC    GLOBAL DEFAULT    2 mmc_spi_read_ocr
+   465: 00002040    20 FUNC    GLOBAL DEFAULT    2 mmc_power_off
+   467: 0000a760    12 FUNC    GLOBAL DEFAULT    2 sdio_read_common_cis
+   468: 00001ae0   220 FUNC    GLOBAL DEFAULT    2 mmc_power_save_host
+   469: 00002cf0   576 FUNC    GLOBAL DEFAULT    2 mmc_add_card
+   470: 00005c50   182 FUNC    GLOBAL DEFAULT    2 mmc_send_csd
+   471: 00006720   218 FUNC    GLOBAL DEFAULT    2 mmc_sd_switch_hs
+   472: 00000bc0    72 FUNC    GLOBAL DEFAULT    2 mmc_set_blocklen
+   473: 00000000   130 FUNC    GLOBAL DEFAULT    4 init_module
+   475: 000030d0   377 FUNC    GLOBAL DEFAULT    2 mmc_alloc_host
+   476: 00003050   117 FUNC    GLOBAL DEFAULT    2 mmc_add_host
+   477: 00000170   111 FUNC    GLOBAL DEFAULT    2 mmc_try_claim_host
+   479: 0000ac50   129 FUNC    GLOBAL DEFAULT    2 sdio_f0_readb
+   480: 0000c310    16 FUNC    GLOBAL DEFAULT    2 mmc_remove_host_debugfs
+   482: 000058f0    12 FUNC    GLOBAL DEFAULT    2 mmc_deselect_cards
+   483: 0000b1a0   501 FUNC    GLOBAL DEFAULT    2 sdio_align_size
+   484: 000065f0   289 FUNC    GLOBAL DEFAULT    2 mmc_decode_cid
+   485: 000028e0   308 FUNC    GLOBAL DEFAULT    2 mmc_pm_notify
+   489: 00000620   289 FUNC    GLOBAL DEFAULT    2 __mmc_claim_host
+   491: 0000b7d0   260 FUNC    GLOBAL DEFAULT    2 sdio_release_irq
+   493: 0000b920   272 FUNC    GLOBAL DEFAULT    2 mmc_fixup_device
+   495: 00001be0    10 FUNC    GLOBAL DEFAULT    2 mmc_set_clock
+   496: 00006b90   997 FUNC    GLOBAL DEFAULT    2 mmc_sd_setup_card
+   499: 00007770    32 FUNC    GLOBAL DEFAULT    2 mmc_sd_get_max_clock
+   500: 0000ba70    63 FUNC    GLOBAL DEFAULT    2 mmc_gpio_get_cd
+   501: 0000ab00    51 FUNC    GLOBAL DEFAULT    2 sdio_set_host_pm_flags
+   503: 0000ace0    99 FUNC    GLOBAL DEFAULT    2 sdio_f0_writeb
+   506: 00009e80    20 FUNC    GLOBAL DEFAULT    2 sdio_unregister_driver
+   507: 000077b0   538 FUNC    GLOBAL DEFAULT    2 mmc_attach_sd
+   508: 0000b140    38 FUNC    GLOBAL DEFAULT    2 sdio_readsb
+   511: 0000ba30    63 FUNC    GLOBAL DEFAULT    2 mmc_gpio_get_ro
+   514: 000008b0   306 FUNC    GLOBAL DEFAULT    2 mmc_cache_ctrl
+   515: 00009740   177 FUNC    GLOBAL DEFAULT    2 mmc_send_io_op_cond
+   516: 00002f30   157 FUNC    GLOBAL DEFAULT    2 mmc_remove_card
+   520: 00002c80    15 FUNC    GLOBAL DEFAULT    2 mmc_unregister_bus
+   522: 0000a7b0    79 FUNC    GLOBAL DEFAULT    2 sdio_read_func_cis
+   523: 00002540   559 FUNC    GLOBAL DEFAULT    2 mmc_rescan
+   529: 00005bf0    81 FUNC    GLOBAL DEFAULT    2 mmc_set_relative_addr
+   530: 0000b000   141 FUNC    GLOBAL DEFAULT    2 sdio_readl
+   531: 00000000   349 FUNC    GLOBAL DEFAULT    2 mmc_set_data_timeout
+   533: 00000750   307 FUNC    GLOBAL DEFAULT    2 mmc_interrupt_hpi
+   534: 00005ac0   185 FUNC    GLOBAL DEFAULT    2 mmc_send_op_cond
+   536: 00000ef0   303 FUNC    GLOBAL DEFAULT    2 mmc_start_bkops
+   538: 000058d0    20 FUNC    GLOBAL DEFAULT    2 mmc_select_card
+   541: 000003e0    15 FUNC    GLOBAL DEFAULT    2 mmc_can_secure_erase_trim
+   545: 00009220  1036 FUNC    GLOBAL DEFAULT    2 mmc_attach_sdio
+   548: 000011c0   139 FUNC    GLOBAL DEFAULT    2 mmc_flush_cache
+   550: 00002470   201 FUNC    GLOBAL DEFAULT    2 mmc_detect_card_removed
+   553: 00009b70   115 FUNC    GLOBAL DEFAULT    2 sdio_reset
+   554: 00005b80   100 FUNC    GLOBAL DEFAULT    2 mmc_all_send_cid
+   555: 00001a60   121 FUNC    GLOBAL DEFAULT    2 mmc_card_awake
+   556: 00007a60   220 FUNC    GLOBAL DEFAULT    2 mmc_wait_for_app_cmd
+   557: 000060f0    79 FUNC    GLOBAL DEFAULT    2 mmc_bus_test
+   558: 0000a080    87 FUNC    GLOBAL DEFAULT    2 sdio_alloc_func
+   559: 0000b100    63 FUNC    GLOBAL DEFAULT    2 sdio_writel
+   561: 00000b10    27 FUNC    GLOBAL DEFAULT    2 mmc_wait_for_req
+   562: 00000580   154 FUNC    GLOBAL DEFAULT    2 mmc_release_host
+   565: 00000160    11 FUNC    GLOBAL DEFAULT    2 mmc_align_data_size
+   566: 000060c0    46 FUNC    GLOBAL DEFAULT    2 mmc_switch
+   568: 00007790    24 FUNC    GLOBAL DEFAULT    2 mmc_sd_go_highspeed
+   569: 0000aae0    27 FUNC    GLOBAL DEFAULT    2 sdio_get_host_pm_caps
+   571: 00002ae0    17 FUNC    GLOBAL DEFAULT    2 mmc_register_driver
+   573: 00007fd0   248 FUNC    GLOBAL DEFAULT    2 mmc_app_sd_status
+   574: 00003250    20 FUNC    GLOBAL DEFAULT    2 mmc_register_host_class
+   575: 0000bd30    71 FUNC    GLOBAL DEFAULT    2 mmc_gpio_request_ro
+   577: 00002c60    20 FUNC    GLOBAL DEFAULT    2 mmc_register_bus
+   579: 00007d10    83 FUNC    GLOBAL DEFAULT    2 mmc_send_relative_addr
+   581: 00001300   183 FUNC    GLOBAL DEFAULT    2 mmc_vddrange_to_ocrmask
+   583: 00000360    18 FUNC    GLOBAL DEFAULT    2 mmc_can_trim
+   584: 000079d0   129 FUNC    GLOBAL DEFAULT    2 mmc_app_cmd
+   585: 00000380    14 FUNC    GLOBAL DEFAULT    2 mmc_can_discard
+   589: 00002000    26 FUNC    GLOBAL DEFAULT    2 mmc_set_timing
+   594: 00009800    51 FUNC    GLOBAL DEFAULT    2 mmc_io_rw_direct
+   595: 00000420    39 FUNC    GLOBAL DEFAULT    2 mmc_card_can_sleep
+   598: 00001020   408 FUNC    GLOBAL DEFAULT    2 mmc_start_req
+   599: 00007ec0   269 FUNC    GLOBAL DEFAULT    2 mmc_sd_switch
+   601: 0000bcb0    40 FUNC    GLOBAL DEFAULT    2 mmc_gpio_free_ro
+   602: 0000a140    40 FUNC    GLOBAL DEFAULT    2 sdio_remove_func
+   603: 00002150   374 FUNC    GLOBAL DEFAULT    2 mmc_suspend_host
+   605: 0000a0e0    85 FUNC    GLOBAL DEFAULT    2 sdio_add_func
+   606: 00005e50    85 FUNC    GLOBAL DEFAULT    2 mmc_spi_set_crc
+   608: 00002c90    95 FUNC    GLOBAL DEFAULT    2 mmc_alloc_card
+   609: 0000a770    51 FUNC    GLOBAL DEFAULT    2 sdio_free_common_cis
+   610: 00006800   218 FUNC    GLOBAL DEFAULT    2 mmc_sd_get_cid
+   611: 000015f0   999 FUNC    GLOBAL DEFAULT    2 mmc_erase
+   612: 00000b30   133 FUNC    GLOBAL DEFAULT    2 mmc_wait_for_cmd
+   613: 00000de0    12 FUNC    GLOBAL DEFAULT    2 mmc_hw_reset
+   614: 0000a050    20 FUNC    GLOBAL DEFAULT    2 sdio_register_bus
+   615: 0000b400   343 FUNC    GLOBAL DEFAULT    2 sdio_claim_irq
+   616: 0000a9a0    69 FUNC    GLOBAL DEFAULT    2 sdio_writeb_readb
+   617: 00000e40   164 FUNC    GLOBAL DEFAULT    2 mmc_read_bkops_status
+   618: 0000a9f0   238 FUNC    GLOBAL DEFAULT    2 sdio_enable_func
+   619: 0000b170    43 FUNC    GLOBAL DEFAULT    2 sdio_writesb
+   621: 00001ed0   289 FUNC    GLOBAL DEFAULT    2 mmc_resume_host
+   623: 00001bc0    26 FUNC    GLOBAL DEFAULT    2 mmc_set_chip_select
+   624: 00001c20    26 FUNC    GLOBAL DEFAULT    2 mmc_set_bus_width
+   625: 000022d0   308 FUNC    GLOBAL DEFAULT    2 mmc_init_erase
+   626: 000019e0   121 FUNC    GLOBAL DEFAULT    2 mmc_card_sleep
+   628: 00002020    26 FUNC    GLOBAL DEFAULT    2 mmc_set_driver_type
+   629: 0000a070    15 FUNC    GLOBAL DEFAULT    2 sdio_unregister_bus
+   631: 00003020    33 FUNC    GLOBAL DEFAULT    2 mmc_free_host
+   632: 00005eb0   114 FUNC    GLOBAL DEFAULT    2 mmc_send_status
+   635: 0000bbf0   186 FUNC    GLOBAL DEFAULT    2 mmc_gpio_request_cd
+   636: 000068e0   688 FUNC    GLOBAL DEFAULT    2 mmc_sd_get_csd
+   638: 00001bf0     5 FUNC    GLOBAL DEFAULT    2 mmc_set_ungated
+   642: 00000890    31 FUNC    GLOBAL DEFAULT    2 mmc_detect_change
+   644: 00005a10   168 FUNC    GLOBAL DEFAULT    2 mmc_go_idle
+   645: 00007c90   118 FUNC    GLOBAL DEFAULT    2 mmc_send_if_cond
+   649: 0000c420    16 FUNC    GLOBAL DEFAULT    2 mmc_remove_card_debugfs
+   650: 00001c40    99 FUNC    GLOBAL DEFAULT    2 mmc_select_voltage
+   651: 000027c0   273 FUNC    GLOBAL DEFAULT    2 mmc_stop_host
+   654: 00002060   103 FUNC    GLOBAL DEFAULT    2 mmc_attach_bus
+   655: 00003270    15 FUNC    GLOBAL DEFAULT    2 mmc_unregister_host_class
+   656: 00002410    96 FUNC    GLOBAL DEFAULT    2 _mmc_detect_card_removed
+   658: 00000c10    81 FUNC    GLOBAL DEFAULT    2 mmc_set_blockcount
+   662: 00009840   801 FUNC    GLOBAL DEFAULT    2 mmc_io_rw_extended
+   664: 00000390    66 FUNC    GLOBAL DEFAULT    2 mmc_can_sanitize
+   665: 00000e00    49 FUNC    GLOBAL DEFAULT    2 mmc_stop_bkops
+   666: 0000ab80   134 FUNC    GLOBAL DEFAULT    2 sdio_readb
+   667: 0000ac10    64 FUNC    GLOBAL DEFAULT    2 sdio_writeb
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/host$ readelf -a sdhci.ko | grep FUNC
+     8: 00000000   178 FUNC    LOCAL  DEFAULT    2 sdhci_dumpregs
+     9: 000000c0    54 FUNC    LOCAL  DEFAULT    2 sdhci_led_control
+    10: 00000100    73 FUNC    LOCAL  DEFAULT    2 sdhci_check_ro
+    11: 00000150    30 FUNC    LOCAL  DEFAULT    2 sdhci_hw_reset
+    12: 00000170   113 FUNC    LOCAL  DEFAULT    2 sdhci_enable_sdio_irq_nol
+    13: 000001f0    22 FUNC    LOCAL  DEFAULT    2 sdhci_enable_sdio_irq
+    14: 00000210   113 FUNC    LOCAL  DEFAULT    2 sdhci_do_enable_preset_va
+    15: 00000290    17 FUNC    LOCAL  DEFAULT    2 sdhci_tuning_timer
+    16: 000002d0   330 FUNC    LOCAL  DEFAULT    2 sdhci_reset
+    17: 00000420   194 FUNC    LOCAL  DEFAULT    2 sdhci_card_event
+    18: 000004f0   225 FUNC    LOCAL  DEFAULT    2 sdhci_set_power
+    19: 000005e0    18 FUNC    LOCAL  DEFAULT    2 sdhci_kunmap_atomic
+    20: 000006b0    37 FUNC    LOCAL  DEFAULT    2 sdhci_tasklet_card
+    21: 000006f0    91 FUNC    LOCAL  DEFAULT    2 sdhci_set_card_detection
+    22: 00000000     5 FUNC    LOCAL  DEFAULT    4 dma_map_single_attrs.part
+    23: 00000005     5 FUNC    LOCAL  DEFAULT    4 dma_unmap_sg_attrs.part.3
+    24: 0000000a     5 FUNC    LOCAL  DEFAULT    4 dma_unmap_single_attrs.pa
+    25: 00000930   566 FUNC    LOCAL  DEFAULT    2 sdhci_set_clock
+    26: 0000000f     5 FUNC    LOCAL  DEFAULT    4 dma_map_sg_attrs.part.39
+    27: 00000b70    35 FUNC    LOCAL  DEFAULT    2 sdhci_runtime_pm_put.isra
+    28: 00000ba0    58 FUNC    LOCAL  DEFAULT    2 sdhci_enable_preset_value
+    29: 00000be0   244 FUNC    LOCAL  DEFAULT    2 sdhci_tasklet_finish
+    30: 00000ce0   143 FUNC    LOCAL  DEFAULT    2 sdhci_get_ro
+    31: 00000d70    92 FUNC    LOCAL  DEFAULT    2 sdhci_init
+    32: 00001120    55 FUNC    LOCAL  DEFAULT    2 sdhci_set_ios
+    33: 00000dd0   840 FUNC    LOCAL  DEFAULT    2 sdhci_do_set_ios
+    37: 00002ca0   151 FUNC    LOCAL  DEFAULT    2 sdhci_timeout_timer
+    39: 00002e80  1797 FUNC    LOCAL  DEFAULT    2 sdhci_irq
+    40: 00001cc0   345 FUNC    LOCAL  DEFAULT    2 sdhci_do_start_signal_vol
+    41: 00001ee0    71 FUNC    LOCAL  DEFAULT    2 sdhci_start_signal_voltag
+    42: 00001f30  2716 FUNC    LOCAL  DEFAULT    2 sdhci_send_command
+    43: 000029d0   715 FUNC    LOCAL  DEFAULT    2 sdhci_finish_data
+    44: 00002d40   315 FUNC    LOCAL  DEFAULT    2 sdhci_finish_command
+    45: 00003590  1036 FUNC    LOCAL  DEFAULT    2 sdhci_execute_tuning
+    46: 000039a0   360 FUNC    LOCAL  DEFAULT    2 sdhci_request
+    47: 00000000    32 FUNC    LOCAL  DEFAULT    5 sdhci_drv_init
+    48: 00000000     5 FUNC    LOCAL  DEFAULT    7 sdhci_drv_exit
+    95: 000002b0    20 FUNC    GLOBAL DEFAULT    2 sdhci_enable_irq_wakeups
+    99: 00000000     5 FUNC    GLOBAL DEFAULT    7 cleanup_module
+   107: 00000000    32 FUNC    GLOBAL DEFAULT    5 init_module
+   116: 00000750   164 FUNC    GLOBAL DEFAULT    2 sdhci_suspend_host
+   119: 00001e20   190 FUNC    GLOBAL DEFAULT    2 sdhci_runtime_resume_host
+   121: 00000600    92 FUNC    GLOBAL DEFAULT    2 sdhci_runtime_suspend_hos
+   134: 000006e0    13 FUNC    GLOBAL DEFAULT    2 sdhci_free_host
+   136: 00001160  2663 FUNC    GLOBAL DEFAULT    2 sdhci_add_host
+   142: 00001bd0   228 FUNC    GLOBAL DEFAULT    2 sdhci_resume_host
+
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/host$ readelf -a sdhci-pci.ko | grep FUNC
+     6: 00000000    27 FUNC    LOCAL  DEFAULT    2 ricoh_probe
+     7: 00000020    20 FUNC    LOCAL  DEFAULT    2 ricoh_mmc_probe_slot
+     8: 00000040    20 FUNC    LOCAL  DEFAULT    2 mrst_hc_probe_slot
+     9: 00000060    14 FUNC    LOCAL  DEFAULT    2 mrst_hc_probe
+    10: 00000070    20 FUNC    LOCAL  DEFAULT    2 pch_hc_probe_slot
+    11: 00000090    39 FUNC    LOCAL  DEFAULT    2 mfd_emmc_probe_slot
+    12: 000000c0    23 FUNC    LOCAL  DEFAULT    2 mfd_sdio_probe_slot
+    13: 000000e0   156 FUNC    LOCAL  DEFAULT    2 jmicron_probe_slot
+    14: 00000180    28 FUNC    LOCAL  DEFAULT    2 syskt_probe
+    15: 000001a0    22 FUNC    LOCAL  DEFAULT    2 via_probe
+    16: 000001c0    66 FUNC    LOCAL  DEFAULT    2 sdhci_pci_8bit_width
+    17: 00000210     7 FUNC    LOCAL  DEFAULT    2 sdhci_pci_runtime_idle
+    18: 00000220   479 FUNC    LOCAL  DEFAULT    2 o2_probe
+    19: 00000400   257 FUNC    LOCAL  DEFAULT    2 syskt_probe_slot
+    20: 00000510    17 FUNC    LOCAL  DEFAULT    2 ricoh_mmc_resume
+    21: 00000530    82 FUNC    LOCAL  DEFAULT    2 sdhci_pci_runtime_resume
+    22: 00000590   135 FUNC    LOCAL  DEFAULT    2 sdhci_pci_runtime_suspend
+    23: 00000620   114 FUNC    LOCAL  DEFAULT    2 sdhci_pci_resume
+    24: 000006a0   308 FUNC    LOCAL  DEFAULT    2 sdhci_pci_suspend
+    25: 000007e0   151 FUNC    LOCAL  DEFAULT    2 sdhci_pci_remove_slot
+    26: 00000880   120 FUNC    LOCAL  DEFAULT    2 sdhci_pci_remove
+    27: 00000900    67 FUNC    LOCAL  DEFAULT    2 sdhci_pci_hw_reset
+    28: 00000950   115 FUNC    LOCAL  DEFAULT    2 sdhci_pci_enable_dma
+    29: 000009d0    35 FUNC    LOCAL  DEFAULT    2 sdhci_pci_sd_cd
+    30: 00000a00    51 FUNC    LOCAL  DEFAULT    2 jmicron_remove_slot
+    31: 00000a40    83 FUNC    LOCAL  DEFAULT    2 jmicron_suspend
+    32: 00000aa0    77 FUNC    LOCAL  DEFAULT    2 jmicron_pmos.isra.12.cons
+    33: 00000af0   230 FUNC    LOCAL  DEFAULT    2 jmicron_probe
+    34: 00000be0   119 FUNC    LOCAL  DEFAULT    2 jmicron_resume
+    35: 00000c60  1845 FUNC    LOCAL  DEFAULT    2 sdhci_pci_probe
+    37: 00000000    25 FUNC    LOCAL  DEFAULT    4 sdhci_driver_init
+    39: 00000000    15 FUNC    LOCAL  DEFAULT    6 sdhci_driver_exit
+   117: 00000000    15 FUNC    GLOBAL DEFAULT    6 cleanup_module
+   124: 00000000    25 FUNC    GLOBAL DEFAULT    4 init_module
+
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/host$ readelf -a sdhci-pltfm.ko | grep FUNC
+     9: 00000370    15 FUNC    LOCAL  DEFAULT    2 sdhci_pltfm_resume
+    10: 00000380    15 FUNC    LOCAL  DEFAULT    2 sdhci_pltfm_suspend
+    11: 00000000    20 FUNC    LOCAL  DEFAULT    4 sdhci_pltfm_drv_init
+    12: 00000000     5 FUNC    LOCAL  DEFAULT    6 sdhci_pltfm_drv_exit
+    40: 00000300    53 FUNC    GLOBAL DEFAULT    2 sdhci_pltfm_register
+    44: 00000000     5 FUNC    GLOBAL DEFAULT    6 cleanup_module
+    47: 00000000    20 FUNC    GLOBAL DEFAULT    4 init_module
+    49: 00000280   113 FUNC    GLOBAL DEFAULT    2 sdhci_pltfm_free
+    52: 00000340    46 FUNC    GLOBAL DEFAULT    2 sdhci_pltfm_unregister
+    59: 00000000     5 FUNC    GLOBAL DEFAULT    2 sdhci_get_of_property
+    61: 00000010   618 FUNC    GLOBAL DEFAULT    2 sdhci_pltfm_init
+
+links:
+======
+http://www.stlinux.com/mmc
+http://www.phonesdevelopers.com/1781276/
+
+==> I guess host is supproting the SDIO cards but I think cards brought must also be provided with corresponding drivers ???
+
+==> Host controller of ARASAN ,I think has SD,SDIO,eMMC support but the manufacturer of SDIO bluetooth and SDIO wifi should provide drivers to SDIO-bluetooth card and SDIO-wifi card to sync with the SDIO-host-controller
+
+==> mmc/card/sdio_uart.c ????	
+
+
+==> /home/dharma/Videos/IOT_Automation/my_work/linux-2.6.24-sdio.patch is the patch to linux kernel 2.6.24 that offers drivers for several SDIO cards
+
+==> /home/dharma/Videos/IOT_Automation/my_work/Install_package_080611.rar is driver for SDIO bluetooth by http://www.spectec.com.tw/bluetoothcard.html
+
+MARVEL SDIO-wifi & SDIO-Bluetooth
+==================================
+http://labs.isee.biz/index.php/How_to_setup_Marvell_88w8686_SDIO_wifi
+http://labs.isee.biz/index.php/How_to_setup_Marvell_bluetooth	
+
+require
+--------
+libertas: Marvell Libertas 8385/8686/8688 SDIO 802.11b/g card
+libertas Firmware
+Libertas SDIO driver
+
+AP--> Access point
+
+Latency is expecting the no. of reads or writes per second.Hence bs=1024 count=10 ==> 10 reads/writes of each read/write length 1024
+
+reads/sec = 10 / (time taken to complete the above action)
+
+Latency tools
+=============
+http://www.brendangregg.com/HeatMaps/latency.html
+
+awk variable value to shell
+============================
+awk '{print $2;sum = 0;sum = $2;print "sum="sum;test=test+sum;print "test=="test;i++;print "i=="i;}' throughput
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ awk '{print $2;sum = 0;sum = $2;print "sum="sum;test=test+sum;print "test=="test;i++;print "i=="i;}' throughput | awk '/test/{print $1}'
+
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ awk '{print $2;sum = 0;sum = $2;test=test+sum;print "test=="test ;i++;print "i=="i;print}' throughput | awk '/test/' | awk 'END{print}'
+test==360
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ y=$(awk '{print $2;sum = 0;sum = $2;test=test+sum;print "test=="test ;i++;print "i=="i;print}' throughput | awk '/test/' | awk 'END{print}')
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ echo $y
+test==360
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ z=$(awk '{print $2;sum = 0;sum = $2;test=test+sum;print "test=="test ;i++;print "i=="i;print}' throughput | awk '/i/' | awk 'END{print}')
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ echo $z
+i==9
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ awk '{print $2;sum = 0;sum = $2;test=test+sum;print test ;i++;print i}' throughput | awk 'END{print}'
+9
+
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ count=$(awk '{print $2;sum = 0;sum = $2;test=test+sum;print test ;i++;print i}' throughput | awk 'END{print}')
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ echo $count 
+9
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ count=$(awk '{print $2;sum = 0;sum = $2;test=test+sum;print test ;i++;print i}' throughput | awk 'END{print $0-1}')
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ echo $count
+8
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ awk '{print $2;sum = 0;sum = $2;test=test+sum;print test ;i++;print i}' throughput | awk '{last = this; this = $0} END {print last}'
+360
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ sum=$(awk '{print $2;sum = 0;sum = $2;test=test+sum;print test ;i++;print i}' throughput | awk '{last = this; this = $0} END {print last}')
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ echo $sum
+360
+
+
+need logging awk command without overwrite ???
+===========================================
+
+also require how to export shell variable into awk ??
+
+
+final working code 
+===================
+memory_12_writethroughput()
+	{                                                                               
+log '****nay@:::In memory_12_writethroughput()\n'                               
+                                                                                
+        for bs in 1024 2048                                                     
+        do                                                                      
+        for count in 100 1000 2000                                              
+        do                                                                      
+        time dd if=/dev/zero of=/media/mmcblk0p1/test.img bs=$bs count=$count 2>
+#       awk '{print $1;sum = 0;sum = $2;print "sum="sum;test=test+sum;print "tes
+                                                                                
+        done                                                                    
+        done                                                                    
+                                                                                
+        count=$(awk '{print $1;sum = 0;sum = $1;print sum;test=test+sum;print te
+        sum=$(awk '{print $1;sum = 0;sum = $1;print sum;test=test+sum;print test
+echo "sum=$sum"                                                                 
+echo "count==$count"                                                            
+avg=$sum/$count;                                                                
+echo "Average_throughput=$avg"                                                 
+#echo "avg==$avg"                                                               
+rm /media/mmcblk0p1/test.img                                                    
+#rm throughput                                                                  
+} 
+
+-----------------------------------------------------------------------------------------------------------
+link to working source:: /home/dharma/Videos/IOT_Automation/my_work/storage-test_working_avg_throughput.sh---wrong
+
+
+/home/dharma/Music/1.png
+
+-----------------------------------------------------------------------------------------------------------
+
+
+for mathematical expression in shell use 'expr <...>'
+to store awk log in a variable (or) export awk variable to shell variable a=$(awk '//') 
+awk log can again be given to an awk
+
+/******************************************************************************
+/proc/ioports lists ranges of I/O port addresses.
+
+/proc/iomem lists ranges of physical memory addresses.
+
+You can access physical memory addresses directly from a user program by mapping /dev/mem, but you probably don't want to. You can access I/O ports directly from a user program with ioperm, but you probably don't want to. Generally, you really want to be in kernel mode to do these kinds of things because you need to do things like disable interrupts.
+
+cat /sys/devices/platform/intel-qrk-imr/stat
+cat /proc/iomem | grep serial
+dmesg | grep ttyS*
+
+*******************************
+-v bs="$bs" -v count="$count" ==> to export sell variables into the AWK
+
+	
+Randomly execute command-1 & command-2 working script 
+=====================================================
+/home/dharma/Videos/IOT_Automation/shellscript/random4.sh
+
+***Code***
+memory_12_writethroughput()
+{
+log '****nay@:::In memory_12_writethroughput()\n'
+
+	for bs in 1024 2048
+	do
+	for count in 100 1000 2000
+	do
+	time dd if=/dev/zero of=/media/mmcblk0p1/test.img bs=$bs count=$count 2>&1 | awk -v bs="$bs" -v count="$count"'/real/{sys_time=($2*60+$3);tp=(1024*1024/sys_time);tpf=tp/1000000;print tpf"\tMB/S"}' >> throughput
+
+	done
+	done
+log '****nay@:::Out of Loops*****'
+count=$(awk '{print $1;sum=0;sum=$1;print sum;test=test+sum;print test;i++;print i}' throughput | awk 'END{print}')
+sum=$(awk '{print $1;sum=0;sum=$1;print sum;test=test+sum;print test;i++;print i}'throughput | awk '{last=this;this=$0} END{print last}')
+
+echo "sum=$sum"
+echo "count=$count"
+avg=`expr $sum/$count`;
+echo "Average_throughput=$avg"
+rm /media/mmcblk0p1/test.img
+#rm throughput
+}
+
+
+memory_11_readthroughput()
+{
+log '****nay@:::In memory_11_readthroughput()\n'
+	for bs in 1024 2048
+	do
+	for count in 100 1000 2000
+	do
+	time dd if=/media/mmcblk0p1/test.img of=/dev/zero bs=$bs count=$count 2>&1 | awk -v bs="$bs" -v count="$count"'/real/{sys_time=($2*60+$3);tp=(1024*1024/sys_time);tpf=tp/1000000;print tpf"\tMB/S"}' >> throughput
+
+	done
+	done
+log '****nay@:::Out of Loops*****'
+count=$(awk '{print $1;sum=0;sum=$1;print sum;test=test+sum;print test;i++;print i}' throughput | awk 'END{print}')
+sum=$(awk '{print $1;sum=0;sum=$1;print sum;test=test+sum;print test;i++;print i}'throughput | awk '{last=this;this=$0} END{print last}')
+
+echo "sum=$sum"
+echo "count=$count"
+avg=`expr $sum/$count`;
+echo "Average_throughput=$avg"
+rm /media/mmcblk0p1/test.img
+#rm throughput
+
+}
+
+
+memory_13_readLatency()
+{
+log '****nay@:::In memory_13_readLatency()\n'
+	for bs in 1024 2048
+	do
+	for count in 100 1000 2000
+	do
+time dd if=/media/mmcblk0p1/test.img of=/dev/zero bs=$bs count=$count 2>&1 | awk -v count="$count"'/real/{sys_time=($2*60+$3);print sys_time;print "READ LATENCY="$count/(sys_time) "reads/sec""}' >> readlatency
+	done
+	done
+log '****nay@:::Out of Loops*****'
+count=$(awk '{print $1;sum=0;sum=$1;print sum;test=test+sum;print test;i++;print i}' throughput | awk 'END{print}')
+sum=$(awk '{print $1;sum=0;sum=$1;print sum;test=test+sum;print test;i++;print i}'throughput | awk '{last=this;this=$0} END{print last}')
+echo "sum=$sum"
+echo "count=$count"
+avg=`expr $sum/$count`;
+echo "Average_Read_Latency=$avg"
+
+}
+
+
+
+memory_14_writeLatency()
+{
+
+	for bs in 1024 2048
+	do
+	for count in 100 1000 2000
+	do
+time dd if=/dev/zero of=/media/mmcblk0p1/test.img bs=$bs count=$count 2>&1 | awk -v count="$count"'/real/{sys_time=($2*60+$3);print sys_time;print "READ LATENCY="$count/(sys_time) "reads/sec""}' >> readlatency
+	done
+	done
+log '****nay@:::Out of Loops*****'
+count=$(awk '{print $1;sum=0;sum=$1;print sum;test=test+sum;print test;i++;print i}' throughput | awk 'END{print}')
+sum=$(awk '{print $1;sum=0;sum=$1;print sum;test=test+sum;print test;i++;print i}'throughput | awk '{last=this;this=$0} END{print last}')
+echo "sum=$sum"
+echo "count=$count"
+avg=`expr $sum/$count`;
+echo "Average_Read_Latency=$avg"
+
+}
+
+
+
+
+***Code***
+
+
+Scripting
+============
+$0 ==> current file name 
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc$ ctags -R .
+The program 'ctags' can be found in the following packages:
+ * exuberant-ctags
+ * elvis-tools
+
+ioctl
+=======
+ If there is no other system call that meets a particular requirement, then ioctl() is the one to use.
+
+
+
+ioctl documentation
+===================
+/home/dharma/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/Documentation/ioctl
+
+you read /proc/kmsg (which is often most easily done with the dmesg command).
+
+
+floating point division in shell script ???????????/
+==>You can't. bash only does integers; you must delegate to a tool such as bc
+
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ echo $((16#a))
+10
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ echo $((16#b))
+11
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ awk '{print $1;a=lshift(1,0);b=lshift(1,2);print a;print b;c=$(( $a | $b ));print c}' testhex 
+awk: {print $1;a=lshift(1,0);b=lshift(1,2);print a;print b;c=$(( $a | $b ));print c}
+awk:                                                                  ^ syntax error
+awk: {print $1;a=lshift(1,0);b=lshift(1,2);print a;print b;c=$(( $a | $b ));print c}
+awk:                                                                      ^ syntax error
+awk: {print $1;a=lshift(1,0);b=lshift(1,2);print a;print b;c=$(( $a | $b ));print c}
+awk:                                                                       ^ syntax error
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ awk '{print $1;a=lshift(1,0);b=lshift(1,2);print a;print b;c=`expr ( a | b )`;print c}' testhex 
+awk: {print $1;a=lshift(1,0);b=lshift(1,2);print a;print b;c=`expr ( a | b )`;print c}
+awk:                                                         ^ invalid char '`' in expression
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ awk '{print "dol-1== "$1;a1=lshift(1,0);b1=lshift(1,2);print "a1== "a1;print "b1== "b1;c1=or(a1,b1);print "c1== "c1;d1=or(c1,$1);print "d1== "d1}' testhex 
+dol-1== a
+a1== 1
+b1== 4
+c1== 5
+d1== 5
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ awk '{a=$1;len=length(a);print a;print len}' hexfile
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+32
+
+
+strtonum(str) #
+Examine str and return its numeric value. If str begins with a leading ‘0’, strtonum() assumes that str is an octal number. If str begins with a leading ‘0x’ or ‘0X’, strtonum() assumes that str is a hexadecimal number. For example:
+
+$ echo 0x11 |
+> gawk '{ printf "%d\n", strtonum($1) }'
+-| 17
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ echo `expr $((10|5))`
+15
+
+
+
+
+
+
+
+ ===>> bits2str --- turn a byte into readable ones and zeros
+
+version--1
+============
+s=${csd:14:4} ==> 14,15,16,17
+
+s=s&(0011 1111 1111 1100)
+
+version-2
+===========
+s=${csd:15:6}
+
+s=s&(0011 1111 1111 1111 1111 1111)
+
+card inserted
+ls /sys/class/mmc_host/mmc0/mmc0\:59b4/
+
+card removed
+root@clanton:~# ls /sys/class/mmc_host/mmc0/
+device/     power/      subsystem/  uevent
+
+
+=============================================================log=================================================================
+
+root@clanton:/# ./storage-test.sh -t .memory_03_size
+./storage-test.sh -t .memory_03_size
+2001-01-01.05:19:42: ./storage-test.sh.1324: Fully qualified test name = .memory_03_size
+2001-01-01.05:19:42: ./storage-test.sh.1324: Test name = memory_03_size
+2001-01-01.05:19:42: ./storage-test.sh.1324: softconfig = 
+2001-01-01.05:19:42: ./storage-test.sh.1324: Empty softconfig, falling back on BEST
+2001-01-01.05:19:42: ./storage-test.sh.1324: debug_quirks=NONE
+2001-01-01.05:19:42: ./storage-test.sh.1324: Entering tear_down() for test "(initial-cleanup)".
+2001-01-01.05:19:42: ./storage-test.sh.1324: Unloading mmc_block and sdhci_pci
+2001-01-01.05:19:42: ./storage-test.sh.1324: Starting test "memory_03_size"
+2001-01-01.05:19:42: ./storage-test.sh.1324: ****nay@:::memory_03_size()
+csd_str== 4
+lnib==0
+version.01
+s1==ed23
+./storage-test.sh: line 1: arithmetic syntax error
+2001-01-01.05:19:42: ./storage-test.sh.1324: FAILED: non-zero exit status = 2
+
+
+
+/*\
+
+#echo "s1=="$s | awk -v hex="$s" '{print "hex== "hex;res=and(11011,11110);print
+
+\*/
+
+
+/*/*\*\
+
+root@clanton:/# fdisk -l
+fdisk -l
+
+Disk /dev/mmcblk0: 1965 MB, 1965031424 bytes
+255 heads, 63 sectors/track, 238 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+
+        Device Boot      Start         End      Blocks  Id System
+/dev/mmcblk0p1               1         239     1918944+  e Win95 FAT16 (LBA)
+Partition 1 has different physical/logical endings:
+     phys=(237, 254, 63) logical=(238, 229, 55)
+
+
+/*/*\*\
+
+
+
+mount /dev/mmcblk0p1 /media/test2/
+umount /media/test
+mount -o remount,ro /dev/mmcblk0p1 /media/test/
+(or)
+mount -r /dev/mmcblk0p1  /media/test
+root@clanton:/media/test# touch file
+touch file
+touch: file: Read-only file system
+
+
+fdisk -l for 4GB SD Card
+=========================
+root@clanton:/# fdisk -l
+fdisk -l
+
+Disk /dev/mmcblk0: 4025 MB, 4025483264 bytes
+124 heads, 62 sectors/track, 1022 cylinders
+Units = cylinders of 7688 * 512 = 3936256 bytes
+
+        Device Boot      Start         End      Blocks  Id System
+/dev/mmcblk0p1               1        1022     3928537   c Win95 FAT32 (LBA)
+
+
+
+CTAGS
+=====
+to search tags............. ctrl + }
+to go back.................  ctrl + T 
+
+
+Interface signals ???
+
+Present State Register (PRE_STATE)—Offset 24h
+=================================================
+=================================================
+
+X1000 datasheet --> pg 624 --> keyword:write
+test case
+==========
+how host contrller differentiates b/w SD,SDIO & eMMC ???
+
+@@	If a card is removed while its power is on and its clock is oscillating, the Host Controller shall clear SD Bus Power in the Power
+Control register and SD Clock Enable in the Clock Control register.
+
+signal sd_wp(wp ==> write protect)
+-----------------------Present State Register (PRE_STATE)—Offset 24h-------------------------------
+Write Protect Switch Pin Level (wr_prot_sw_pin_lvl): The Write Protect Switch is
+supported for memory and combo cards. This bit reflects the inverse value of the
+SD_WP pin.
+1 Write enabled (SD_WP=0)
+0 Write protected (SD_WP=1)
+
+
+==> mmci_get_cd() in the code
+---------------------Present State Register (PRE_STATE)—Offset 24h--------------------
+
+
+---------Host Control Register (HOST_CTL)—Offset 28h----------------
+High Speed Enable (hi_spd_en): This bit is optional. Before setting this bit, the HD
+shall check the High Speed Support in the capabilities register. If this bit is set to 0
+(default), the HC outputs CMD line and DAT lines at the falling edge of the SD clock (up
+to 25 MHz/ 20MHz for MMC). If this bit is set to 1, the HC outputs CMD line and DAT
+lines at the rising edge of the SD clock (up to 50 MHz for SD/52MHz for MMC)/ 208Mhz
+(for SD3.0) If Preset Value Enable in the Host Control 2 register is set to 1, Host Driver
+needs to reset SD Clock Enable before changing this field to avoid generating clock
+glitches. After setting this field, the Host Driver sets SD Clock Enable again
+1 - High Speed Mode
+0 - Normal Speed Mode
+------------Host Control Register (HOST_CTL)—Offset 28h-------------
+
+-----------Clock Control Register (CLK_CTL)—Offset 2Ch---------------
+2 0b 
+SD Clock Enable (sd_clk_en): The Host Controller shall stop SDCLK when writing this
+  RW bit to 0. SDCLK Frequency Select can be changed when this bit is 0. Then, the Host
+    Controller shall maintain the same clock frequency until SDCLK is stopped (Stop at
+   SDCLK=0). If the Card Inserted in the Present State register is cleared, this bit shall be
+  cleared.
+ 1 Enable
+0 Disable
+
+==> tmio_mmc_clk_stop() in code
+-----------Clock Control Register (CLK_CTL)—Offset 2Ch---------------
+
+
+---------Host Control 2 Register (HOST_CTRL_2)—Offset 3Eh---------
+
+Preset Value Enable (preset_value): Host Controller Version 3.00 supports this bit.
+As the operating SDCLK frequency and I/O driver strength depend on the Host System
+implementation, it is difficult to determine these parameters in the Standard Host
+Driver. When Preset Value Enable is set to automatic This bit enables the functions
+defined in the Preset Value registers. 1 Automatic Selection by Preset Value are Enabled
+0 SDCLK and Driver Strength are controlled by Host Driver If this bit is set to 0, SDCLK
+Frequency Select, Clock Generator Select in the Clock Control register and Driver
+Strength Select in Host Control 2 register are set by Host Driver. If this bit is set to 1,
+SDCLK Frequency Select, Clock Generator Select in the Clock Control register and Driver
+Strength Select in Host Control 2 register are set by Host Controller as specified in the
+Preset Value registers.
+
+---------Host Control 2 Register (HOST_CTRL_2)—Offset 3Eh---------
+
+
+
+------Capabilities Register (CAPABILITIES)—Offset 40h---------
+21 1b
+ High Speed Support (high_speed_support): This bit indicates whether the HC and
+   RO the Host System support High Speed mode and they can supply SD Clock frequency
+     from 25MHz to 50 MHz (for SD)/ 20MHz to 52MHz (for MMC). 0 - High Speed Not
+    Supported, 1 - High Speed Supported
+
+Base Clock Frequency for SD Clock
+
+
+------Capabilities Register (CAPABILITIES)—Offset 40h---------
+
+
+==> Latency & Throughput can be calculated in PC but in galileo uses embedded linux whoses busybox Does not display the latency and throughput data
+
+
+Tech-Queries
+=============
+
+test-case-3
+-----------
+To check whether C_SIZE read from CSD register is correct...
+Approach:calculating SD size using  C_SIZE,C_SIZE_MULT,...etc parameters
+and comparing with o/p of "fdisk -l"...if sizes are approximately same then C_SIZE is correct and test is passed
+
+Is this approach correct ???
+
+test-case-4
+============
+To check SD card removal is detected
+Approach:If the SD card is inserted it is populated in the /sys/class/ directory.Hence checking if directory is present & if yes then card is inserted else card is not inserted or removed
+
+alternative:disable clk from host-controller to sd-card to avoid manually removing the SD-card,so that the test case can be completely automated
+
+by sd_clk_en=0 in Clock Control Register of Host-Controller i.e by CCR = CCR & ~(1<<2) ==> CCR &= ~(1<<2) where CCR == clock control register
+
+test-case-10
+=============
+S3 related test cases will also become partially automated because one has to remove the SD card and insert SD card after resuming back
+
+test-case-11 , test-case-12 & test-case-15
+==========================================
+Approach:
+using iozone disadv:should compile with yocto,No Idea of where exactly reading and writing on SD card
+using dd 
+
+test-case-13 & test-case-14
+============================
+calculate read & write latency
+Approach: no. of blocks read/written divided by total time taken for the operation of either read or write respectively
+
+test-case-17
+============
+Mechanical write protect tab but using micro-SD has no tab to lock the card 
+Approach: Mounting the filesystem read-only 
+
+alternative:wr_prot_sw_pin_lvl=0 in Present State Register of Host-Controller
+
+
+ 
+driver_19_card_type , driver_18_card_spec & memory_03_size
+===========================================================
+This script might also work as it is for SDIO combo card also but may not work with SDIO cards because IO cards have no memory and has no CSD,SCR..etc registers
+
+
+
+$((base**e1)) ???
+
+
+linux command to find most no. times repeated word in a file
+
+
+==> sd_spec.sh and card_type.sh works only for SD card but not SDIO and eMMC because CID,CSD & SCR are different for these devices I guess
+
+
+can also find whether the card is mem or i/o or both
+if accessing csd reg gives "Invalid Command" ==> I/O card i.e SDIO wifi ..SDIO blutooth....etc
+else SD card or combo card
+
+
+Kobjects-->Sysfs representation(Every object that shows up in sysfs has,underneath it,a kobject that interacts
+with the kernel to create its visible representation.)
+
+how to search two word "word1 * word2" in cscope or using grep ?????
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/yocto_build_new/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc$ grep -RnHi "card->scr" ./
+./core/sd.c:182:	struct sd_scr *scr = &card->scr;
+./core/sd.c:273:	if (card->scr.sda_vsn < SCR_SPEC_VER_1)
+./core/sd.c:317:	if (card->scr.sda_spec3) {
+./core/sd.c:337:	if (card->scr.sda_vsn < SCR_SPEC_VER_1)
+./core/sd.c:606:	if (!card->scr.sda_spec3)
+./core/sd.c:621:	    (card->scr.bus_widths & SD_SCR_BUS_WIDTH_4)) {
+./core/sd.c:992:			(card->scr.bus_widths & SD_SCR_BUS_WIDTH_4)) {
+./core/sdio.c:150:		card->scr.sda_spec3 = 0;
+./core/sdio.c:154:			card->scr.sda_spec3 = 1;
+./core/sdio.c:302:		(card->scr.bus_widths & SD_SCR_BUS_WIDTH_4)) {
+./core/sdio.c:543:	if (!card->scr.sda_spec3)
+./card/block.c:1615:		     card->scr.cmds & SD_SCR_CMD23_SUPPORT))
+
+
+keywords: mmc_decode_scr, card->scr,mmc_sd_setup_card, mmc_app_send_scr
+
+links:
+http://learn.parallax.com/propeller-c-simple-devices/sd-card-data
+http://designsomething.org/leopardboard/f/33/p/481/1722.aspx
+
+
+linux command: mount
+
+booting board from NFS ????
+
+
+TESTCASE
+Integration tests with other components
+	-test SD card while booting full image Hence testing SD cannot use SD for image hence try to boot full image from the NFS 
+SOL:
+but gen-2 boards have usb. hence can boot full image from the usb Hence no need of NFS 
+
+NFS ???
+
+test code guidelines
+=====================
+1. Requirements mapping – Understand all requirements against your component from all areas i.e. hardware, software, performance, board, quality etc type requirements applicable to the component under test - including reading the relevant section of the EAS, SAS, HLDs along with PRD for the SoC & platforms. Note: Contact Architecture or your tech lead
+
+5. SPI, SD, USB, PCIe etc – ensure multiple cards, models and so forth are included in testing
+
+8. Any bugs found against the component a new test should be developed to ensure that bug does not enter the system again or similar type bug for current project of any project in the family
+
+1. Separate test script for each test case
+
+1. All testcases should leave a platform in the state it found it. 
+2. All tests should be able to run independently and not rely on the running of another test proceeding it to be in the correct state.
+
+
+Don’t assume the drivers you need are loaded, check what drivers are loaded by default if what you need isn’t there then load knowing it has to be unloaded in the exit from the test.
+
+
+3.4. Exit(teardown) – make sure to put the system back in the default state you found it i.e. unload, loaded drivers etc 
+
+
+6. All tests should be easy to:
+	 implement/maintain/understand/extend
+
+
+path to SPI build
+==================
+/home/dharma/Videos/yocto_SPI/build
+
+
+ioctl
+=====
+int (*ioctl) (struct inode *, struct file *, unsigned int, unsigned long);
+
+console types
+===============
+
+tty ==> textual ++> alt + ctrl + F1...F6
+gui terminal ==> alt + ctrl + F7...F12 by default 1 GUI i.e F7
+
+to start other GUI terminals use command
+
+startx -- :1 & and use alt + ctrl + F8 to switch to new GUI terminal
+
+lly
+startx -- :2 & and use alt + ctrl + F9 to switch to new GUI terminal
+           --                      -----
+.
+.
+.
+and so on upto startx -- :5 and alt + ctrl + F12
+  
+
+
+commands
+=========
+top, htop
+
+
+cloudmagic ???
+working good
+thunderbird in linux ???
+
+links
+=======
+https://blog.serverdensity.com/80-linux-monitoring-tools-know/
+
+==> A few techniques are available to driver developers for querying the system: creating
+a file in the /proc filesystem, using the ioctl driver method, and exporting attributes
+via sysfs
+
+++> The /proc filesystem is dynamic, so your module can add or remove entries at any time
+==> The recommended way of making information available in new code is via sysfs rather than /proc but why ????
+
+
+WP switch is not supported by SDIO only cards,host does not support it but for combo cards WP switch is mandatory
+
+microSDIO cards & miniSDIO cards ==> cards with form factor of microSD and miniSD respectively
+
+suspend==> temporarily halt transfer of data
+
+drivers smoke-tested only ????
+
+For the s3 state test cases one must boot from SD card because  All SUT platforms are booted from the SD card because the tests require eglibc. ?????
+
+To check version of libc
+=========================
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ ldd --version
+ldd (Ubuntu EGLIBC 2.15-0ubuntu10.12) 2.15
+Copyright (C) 2012 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Written by Roland McGrath and Ulrich Drepper.
+
+
+To know whether my BIOS supports automatic wakeup
+==================================================
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/shellscript$ grep rtc /var/log/dmesg
+[    0.912317] rtc_cmos 00:06: RTC can wake from S4
+[    0.912465] rtc_cmos 00:06: rtc core: registered rtc_cmos as rtc0
+[    0.912495] rtc_cmos 00:06: alarms up to one month, y3k, 242 bytes nvram, hpet irqs
+[    0.913036] Using IPI No-Shortcut mode
+[    1.638033] rtc_cmos 00:06: setting system clock to 2015-08-04 15:49:55 UTC (1438703395)
+
+
+
+==> ldd commnad prints shared library dependencies
+
+ cron in linux ???
+
+
+
+cross-hill
+===========
+cross-hill has onboard microSD card
+
+SD card device file in cross-hill
+/dev/mmcblk0
+
+
+
+
+GEN-1 S3 log
+=============
+b4 s3
+------
+root@quark:~# ./alarm.sh 
+date1==  978309644
+978309694
+
+after s3
+---------
+root@quark:~# ./alarm.sh 
+date1==  978309644
+978309694
+Capsule -- capsule variable not set
+
+
+
+Capsule variable ????
+
+log by running process in background
+=====================================
+
+root@quark:~# dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024 &
+root@quark:~# 1024+0 records in
+1024+0 records out
+root@quark:~# ./alarm.sh 
+date1==  978310129
+978310179
+Capsule -- capsule variable not set
+[1]+  Done                       dd if=/dev/zero of=/home/root/test.img bs=1024 count=1024
+
+
+sd partition issue
+===================
+Linux
+Insert the SD card you are going to use to write the uNooter image to.
+On the computer, open up terminal and navigate the directory where the extracted uNooter image is located.
+Once in the same directory as the uNooter image, type the following commands:
+umount /dev/<sdcard>
+NOTE: <sdcard> is the device file associated with the SD card, e.g., sdc or mmcblk0, and NOT the mount point, e.g., sdc1 or mmcblk0p1.
+dd if=uNooter.img of=/dev/<sdcard> bs=1M
+
+note:
+=====
+try modprobe all the necessary drivers b4 using SD card because mmcblk0  & mmcblk0p1 are created inside the /dev only if dependent drivers are loaded
+
+
+
+ACPI sub-system ????
+.config ??? make menuconfig ????
+
+
+root@quark:~# ./alarm.sh 
+Mon Jan  1 00:18:25 UTC 2001
+epoch time of current time =  978308305
+epoch time of wake-up time = 
+978308315
+2001-01-01 00:18:35
+ash: write error: Device or resource busy
+
+
+
+copying into sd card while sd is booting (gen-1)
+==================================================
+root@quark:~# dd if=/dev/zero of=/home/root/test2.img bs=1024 count=1024                                                                       
+1024+0 records in
+1024+0 records out
+root@quark:~# ls /media/mmcblk0p1/test2.img
+ls: /media/mmcblk0p1/test2.img: No such file or directory
+
+
+
+root@quark:~# dd if=/dev/zero of=/media/mmcblk0p1/test1.img bs=1024 count=1024                                                                 
+1024+0 records in
+1024+0 records out
+root@quark:~# du -sh /media/mmcblk0p1/test1.img
+1.0M    /media/mmcblk0p1/test1.img
+
+
+
+
+The SDIO/SD/eMMC controller supports all three flavors of DMA described in the SD
+Host Controller 2.0 specification ???????????????////
+
+
+The eMMC storage device is identified in the Linux environment as: /dev/mmcblk0. but /dev/mmcblk0 is populated only after inserting the micro-SD crad ???????
+link:
+	http://www.intel.com/support/motherboards/desktop/sb/cs-034803.htm
+
+
+root@quark:~# reboot | tee /home/root/bootlog.txt
+
+Broadcast message from root@quark (ttyS1) (Mon Jan  1 00:09:17 2001):
+
+The system is going down for reboot NOW!
+root@quark:~# 
+
+sleep mode test-cases working log
+==================================
+
+root@quark:~# ./alarm.sh 
+current date and time = 
+Mon Jan  1 00:25:45 UTC 2001
+epoch time of current time == 
+978308745
+epoch time of wake-up time = 
+978308755
+expected wake-up at = 
+2001-01-01 00:25:55
+�Capsule -- capsule variable not set
+root@quark:~# ls /media/mmcblk0p1/test1.img 
+/media/mmcblk0p1/test1.img
+root@quark:~# du -sh /media/mmcblk0p1/test1.img
+780.0K  /media/mmcblk0p1/test1.img
+root@quark:~# 1024+0 records in
+1024+0 records out
+
+root@quark:~# du -sh /media/mmcblk0p1/test1.img
+1.0M    /media/mmcblk0p1/test1.img
+
+
+log S3 working on Full-Image 
+=============================
+
+root@quark:~# ./alarm.sh 
+current date and time = 
+Mon Jan  1 00:44:51 UTC 2001
+epoch time of current time == 
+root@quark:~# ./alarm.sh 
+10240+0 records in
+10240+0 records out
+current date and time = 
+Mon Jan  1 00:46:30 UTC 2001
+root@quark:~# ./alarm.sh 
+current date and time = 
+Mon Jan  1 00:47:45 UTC 2001
+root@quark:~# du -sh /media/mysd/dest1.txt 
+73.0M   /media/mysd/dest1.txt
+root@quark:~# du -sh /media/mysd/dest1.txt 
+84.4M   /media/mysd/dest1.txt
+root@quark:~# du -sh /media/mysd/dest1.txt 10240+0 records in
+10240+0 records out
+
+100.0M  /media/mysd/dest1.txt
+root@quark:~# du -sh /media/mysd/dest1.txt 
+100.0M  /media/mysd/dest1.txt
+
+Note
+=======
+booting from SD has log displayed while system suspending and resuming back but no log for SPI Flash boot.Hence we can say that only basic functionality of the driver is kept in-order to reduce the size of the driver module and SPI image drivers does not support some less priority functionalities like automaticall inserting module after inserton of the module,automatic mounting of the device file to a folder...etc all such extra features are left for the headache of user and all that to have Linux kernel image size as minimum as possible 
+
+
+
+****** S3 **********
+=====================
+
+Ethernet -- iperf ????
+
+comparing 2 files to be same or not ???
+
+i2c --Linear accelometer,audio subsystem...etc are connected to quark via i2c
+GIP block (I2C/GPIO)
+
+Functional testing ???
+
+FFRD--Intel® ISX Form Factor Reference Design --reference design is intel provides info of their board and 3rd party improves it and returns them back with added features ??
+
+Arduino Proto Shield--aviods soldering & testing a circuit by facilitating the components to be connected and removed just like breadboard but this also works not only for mount through-hole but also for surface mount devices
+
+linux command 
+=============
+lshw -- gives description of the h/w
+!!! locate Documentation/gpio/ ==> locates recursive folders also
+
+Yocto BSP version command ??
+legacy ???
+pin pair has a transitional 5V-to-GND ???
+sol: means negative edge I guess
+Mux control application ???
+
+==>test purpose:GIP-block’s GPIO and I2C remains functional after S3
+
+!!! GPIO chips on the board: Legacy-GPIO, GIP-block, CY8C9540A/PCA9555
+
+I2Ctools package includes i2cdump....etc..? vamsi ??
+
+==> NOTE:: Galileo Gen 2 includes 3 PCAL9535A GPIO expanders, connected to the Quark X1000 via I2C at addresses 0x25, 0x26 and 0x27
+==> Galileo Gen 2 includes a 12-bit 16-channel PWM driver IC, connected to the Quark X1000 via I2C at address 0x47
+===> Galileo Gen 2 includes a 6-channel 10-bit ADC, connected to the Quark X1000 via SPI bus 0, chip-select 0
+
+==> o/p pin anedi board nunchi external device ki povali so aa poye value 1 aa leka 0 naa manam select cheyyochu--o/p pin configurable and i/p pin is not configurable 
+
+Isolated Memory Regions (IMR)
+
+
+
+GPIO Features
+• 16 GPIO pins provided
+• 6 GPIO pins remain active during S3 and can be used to wake the system from the Suspend state.
+• Remaining 10 GPIO pins are powered during S0 state only and are not available in S3
+
+NOTE:
+
+Reuse GPIO test: 4.4.1.1GPIO chips remains functional after S3.That test extensively uses I2C, therefore it also covers I2C comprehensively.
+
+Negative test cases
+===================
+Without inserting the SD card try to modprobe modules related to SD drivers ??
+SOL:
+--ya it'll successfully get inserted without the actual h/w also
+
+
+What happens if I format the card with different file extensions or different file partitions(default is FAT32) ?? 
+SOL: auto-mount feature is working for some cards only & even manual mount is possible only with FAT(filesystem type) partition
+So there should be a test case to detect the filesystem on the card and warn user to partition it with the FAT32 format
+
+CLN.eMMC-SD.<softconfig>.memory-08-.write test case may fail when the partition mounted is mounted as read only partition
+SOL: ya failing
+So there should be a test case to warn user of read-only partitions 
+
+while copying data what if trying to copy more than available space or actual memory of the card--expected to fail--Negative test case
+
+how recovery of data done on SD cards ??
+
+2-5% of the memory already may be bad bcoz to less time to market sisues 
+Flash memory inherently has a limited number of write/erase cycle
+
+you can mess things up if you pull out the card while trying to write to it
+
+h2testw -- to test the h/w of the SD card 
+SOL: for windows only & is GUI based tool,Its linux alternative is f3
+
+writing to card and verifying by checksum and size of data 
+
+b4 using SD card better to format it bcoz formatting card will remove all the bad sectors on the card
+
+SD card cache fix ???
+
+SD card delete makes the data blocks of memory replacable i.e unless new data added to the card the deleted data can be recovered
+
+test-case-1 & test-case-2
+-------------------------
+There should be atleast one partion on the SD card else no mmc_host/mc0 folder Hence no host controller initialisation ??
+
+loop-holes
+===========
+Sometimes The SD card do not work only when it is hot plugged i.e It doesn't show contents of the card.SD card works flawlessly when is plugged in slot first then linux is booted.
+
+SOl: because once removed manually have to manually mount the dev entry to /media entry
+
+
+log after boot without SD
+=========================
+
+root@clanton:~# dmesg | grep mmc
+[   15.982322] mmc0: SDHCI controller on PCI [0000:00:14.0] using ADMA
+
+root@clanton:~# dmesg | grep sd
+[   15.904718] sdhci: Secure Digital Host Controller Interface driver
+[   15.904753] sdhci: Copyright(c) Pierre Ossman
+[   15.909407] sdhci-pci 0000:00:14.0: SDHCI controller found [8086:08a7] (rev 10)
+[   15.910725] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   15.914051] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   16.038600] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   16.143214] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   16.237337] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   16.338370] sdhci-pci 0000:00:14.0: setting latency timer to 64
+
+root@clanton:~# lsmod | grep mmc
+mmc_block 26513 0 - Live 0xd27d9000
+mmc_core 92969 3 mmc_block,sdhci_pci,sdhci, Live 0xd278e000
+
+root@clanton:~# lsmod | grep sd
+sdhci_pci 18191 0 - Live 0xd2773000
+sdhci 27440 1 sdhci_pci, Live 0xd277b000
+mmc_core 92969 3 mmc_block,sdhci_pci,sdhci, Live 0xd278e000
+led_class 13282 1 sdhci, Live 0xd2725000
+
+root@clanton:/sys/devices/pci0000:00/0000:00:14.0/mmc_host/mmc0# pwd
+/sys/class/mmc_host/mmc0 
+
+++> In above mmc0 ==> host controller driver is loaded statically at the boot time
+
+root@clanton:/# lspci -k | grep sd
+00:14.0 Class 0805: 8086:08a7 sdhci-pci
+
+
+root@clanton:~# df -h
+Filesystem                Size      Used Available Use% Mounted on
+devtmpfs                114.8M         0    114.8M   0% /dev
+tmpfs                   116.2M    104.0K    116.1M   0% /var/volatile
+tmpfs                   116.2M         0    116.2M   0% /media/ram
+
+
+
+log after boot with SD card
+===========================
+root@clanton:/# dmesg | grep mmc
+[   15.982322] mmc0: SDHCI controller on PCI [0000:00:14.0] using ADMA
+[  429.903890] mmc0: new high speed SD card at address 0001
+[  429.910894] mmcblk0: mmc0:0001 SD 1.83 GiB 
+[  429.914548]  mmcblk0: p1
+
+root@clanton:/# dmesg | grep sd
+[   15.904718] sdhci: Secure Digital Host Controller Interface driver
+[   15.904753] sdhci: Copyright(c) Pierre Ossman
+[   15.909407] sdhci-pci 0000:00:14.0: SDHCI controller found [8086:08a7] (rev 10)
+[   15.910725] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   15.914051] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   16.038600] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   16.143214] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   16.237337] sdhci-pci 0000:00:14.0: setting latency timer to 64
+[   16.338370] sdhci-pci 0000:00:14.0: setting latency timer to 64
+
+root@clanton:/# lsmod | grep mmc
+mmc_block 26513 2 - Live 0xd27d9000
+mmc_core 92969 3 mmc_block,sdhci_pci,sdhci, Live 0xd278e000
+
+root@clanton:/# lsmod | grep sd
+sdhci_pci 18191 0 - Live 0xd2773000
+sdhci 27440 1 sdhci_pci, Live 0xd277b000
+mmc_core 92969 3 mmc_block,sdhci_pci,sdhci, Live 0xd278e000
+led_class 13282 1 sdhci, Live 0xd2725000
+
+root@clanton:/sys/devices/pci0000:00/0000:00:14.0/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0p1# pwd
+/sys/class/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmcblk0p1
+
+==> above implies the SD card is detected properly
+
+root@clanton:~# df -h
+Filesystem                Size      Used Available Use% Mounted on
+devtmpfs                114.8M         0    114.8M   0% /dev
+tmpfs                   116.2M    104.0K    116.1M   0% /var/volatile
+tmpfs                   116.2M         0    116.2M   0% /media/ram
+/dev/mmcblk0p1            3.7G      3.6G    135.0M  96% /media/mmcblk0p1
+
+bzImage
+========
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux-quark-standard-build/arch/x86/boot$ du -sh bzImage 
+2.0M	bzImage
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/yocto_SPI/build/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux-quark-standard-build/arch/x86/boot$ du -sh bzImage 
+2.0M	bzImage
+
+guidelines
+============
+
+If a test case requires a specific image on the DUT then it is the responsibility of the test code to initialise the DUT. The QSD_ATF will supply utilities for this, for example Grub tests use a test image that is flashed by the test code. ???
+
+ Test code that is common across test cases should be implemented in a class object which in turn can be reviewed and incorporated into the QSD_ATF. ??? ---OK
+
+
+print statement types in sd driver
+===================================
+
+pr_err
+pr_warning
+pr_info
+pr_debug
+
+enabling all the logs due to above pr_*
+-----------------------------------------
+https://www.kernel.org/doc/local/pr_debug.txt
+https://lwn.net/Articles/434856/
+
+
+I think echo 1 > /sys/block/mmcblk0/force_ro will make the whole SD as read-only whereas echo 1 > /sys/block/mmcblk0/mmcblk0p1/ro will make that partition as read only ???
+
+So there can be a test case to check if the sd card is configured as read-only
+reference https://www.kernel.org/doc/Documentation/mmc/mmc-dev-parts.txt
+
+clock gating feature in SD card
+===============================
+Clock gating is a popular technique used in many synchronous circuits for reducing dynamic power dissipation. Clock gating saves power by adding more logic to a circuit to prune the clock tree.
+
+
+==> menu-config stored in .config file and its location is /home/dharma/Videos/yocto_SPI/build/tmp/sysroots/quark/usr/src/kernel/.config
+
+
+info of SD card--can be a new test case
+===================-===================
+fdsik -l /dev/sd...
+
+Options:
+ -b <size>             sector size (512, 1024, 2048 or 4096)
+ -c[=<mode>]           compatible mode: 'dos' or 'nondos' (default)
+ -h                    print this help text
+ -u[=<unit>]           display units: 'cylinders' or 'sectors' (default)
+ -v                    print program version
+ -C <number>           specify the number of cylinders
+ -H <number>           specify the number of heads
+ -S <number>           specify the number of sectors per track
+
+making linux file unalterable or unchangeable or write-protected
+=================================================================
+enable edit protect
+sudo chattr +i file1.txt
+
+check attributes
+lsattr file1.txt
+
+disable edit protect
+sudo chattr -i file1.txt
+
+test case 3 / size / c_size
+=============================
+problem with teardown function 
+
+reading  cat /sys/class/mmc_host/mmc0/mmc0:59b4/csd successfull only when commenting teardown() in main and modprobe sdhci-pci ???
+
+ 
+==> by default filesystem format of the card was FAT32
+
+When modprobe mmc_block 
+-----------------------
+	root@clanton:~# lsmod | grep mmc
+	mmc_block 26513 0 - Live 0xd27ff000
+
+and 
+
+	device files /dev/mmcblk0 and /dev/mmcblk0p1 are created
+
+
+cat /sys/class/mmc_host/mmc0/mmc0\:59b4/csd 
+400e00325b5900001dfd7f800a400000
+
+is working even if we remove mmc_block i.e related to mmc_core and sdhci-pci
+
+Summary
+--------
+/dev/mmcblk0 and /dev/mmcblk0p1 are created when mmc_block is inserted
+and
+cat /sys/class/mmc_host/mmc0/mmc0\:59b4/csd works when sdhci-pci is inserted
+
+
+umount /dev/mmcblk0
+umount: can't umount /dev/mmcblk0: Invalid argument
+
+but umount /dev/mmcblk0p1 success & /media/mmcblk0p1 does not show any data after this step
+
+
+card booted & inserted has /dev/mmcblk0 & /dev/mmcblk0p1 are present & /dev/mmcblk0p1 mounted automatically to /media/mmcblk0p1 but when removed & hotplugged /dev/mmcblk0p1 is present but not automatically mounted to /media/mmcblk0p1 In this case need to manually mount
+                                                                                                                      ---------------
+h2testw
+=======
+Reference:	http://oss.digirati.com.br/f3/
+
+If you use flash memory items you need to download H2testw!
+
+The free program h2testw has proved its worth in detecting flash drives which have been programmed to miss-report capacity to the operating system. Fraudulent programming can make a tiny capacity flash drive – say 64 megabyites (mb) – which is a sixteenth of a gigabyte (GB) look like it has a capacity of 8GB or even 512GB! – by the way at date of writing this (March 4th 2010) there are no genuine flash drives of 512GB capacity, though no doubt there will be in future!
+   
+hetestw in windows,alternative F3(F3 (after Fight Flash Fraud) in linux
+
+EX:Free space: 755.80 MB. This happened because ext2 and some other file systems reserve space for special purposes
+
+2^10 == 1024 ==1k & 10^3 == 1000 ==1k 
+
+i.e 1 GB == 2^30 or 10^9
+
+14.63GiB * 2^30 / 10^9 = 15.71GB. --> convert 10^9 format to 2^30 format and GiB ==> 10^9 & GB ==> 2^30 format
+
+
+bhautik
+---------
+in meeting which negative test case u r talking abt..???
+Me 15:03
+the test cases for read, write ,readthroughput & writethroughput is not possible if someone mounts the sd card as read-only partition...that was one point
+Bhautik Jagdishbhai Ardeshana (WT01 - Mfg & Hi-Tech) 15:03
+ok
+Bhautik Jagdishbhai Ardeshana (WT01 - Mfg & Hi-Tech) 15:04
+and another one in which u r talking abt formatting card...???
+Me 15:04
+If one formats an SD card without even a single partition then auto-mount of the card is not happening
+Me 15:05
+i.e requires the card to be formatted with atleast one partition
+
+just try find loop-hole in the s/w corresponding to SD,SDIO which is not being handled in the driver code
+
+crosscompiler full image
+========================
+make CROSS_COMPILE=/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build/tmp/sysroots/i686-linux/usr/bin/i586-poky-linux/i586-poky-linux-  CC=gcc| tee make.log
+
+/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build/tmp/sysroots/i686-linux/usr/bin/i586-poky-linux/i586-poky-linux-gcc
+
+
+crosscompiler SPI image
+========================
+/home/dharma/Videos/yocto_SPI/build/tmp/sysroots/i686-linux/usr/bin/i586-poky-linux/i586-poky-linux-gcc
+
+linux command
+=============
+tune2fs
+
+different formats 
+=====================
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~$ df -h
+df: `/root/.gvfs': Permission denied
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1       451G  412G   17G  97% /
+udev            4.0G  4.0K  4.0G   1% /dev
+tmpfs           801M  944K  800M   1% /run
+none            5.0M     0  5.0M   0% /run/lock
+none            4.0G   96M  3.9G   3% /run/shm
+/dev/sdb1       3.8G  836K  3.8G   1% /media/mysd
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~$ sudo /sbin/fdisk -l /dev/sdb1 
+[sudo] password for dharma: 
+
+Disk /dev/sdb1: 4022 MB, 4022821888 bytes
+124 heads, 62 sectors/track, 1021 cylinders, total 7857074 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+     Device Boot      Start         End      Blocks   Id  System
+
+
+actual 4gb = 4294967296
+/dev/sdb1: 4022 MB, 4022821888 bytes ==> 4294967296 - 4022821888 == 272145408
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~$ df -T
+df: `/root/.gvfs': Permission denied
+Filesystem     Type     1K-blocks      Used Available Use% Mounted on
+/dev/sda1      ext4     472422680 431397904  17004040  97% /
+udev           devtmpfs   4089828         4   4089824   1% /dev
+tmpfs          tmpfs       819868       944    818924   1% /run
+none           tmpfs         5120         0      5120   0% /run/lock
+none           tmpfs      4099336     99260   4000076   3% /run/shm
+/dev/sdb1      vfat       3920856       836   3920020   1% /media/mysd
+
+
+linux commands
+ wall whereis fdisk write 
+
+
+Bringing galileo into LAN(network)
+==================================
+Edit apt.conf as
+	Acquire::http::proxy "http://proxy-iind.intel.com:911/";
+	Acquire::https::proxy "https://proxy-iind.intel.com:911/";
+	Acquire::ftp::proxy "ftp://proxy-iind.intel.com:911/";                                                     
+
+Edit environment as
+	http_proxy="http://proxy-iind.intel.com:911/"
+	https_proxy="https://proxy-iind.intel.com:911/"
+	ftp_proxy="ftp://proxy-iind.intel.com:911/"
+                                         
+Edit interfaces as
+		# /etc/network/interfaces -- configuration file for ifup(8), ifdown(8)
+		 
+		# The loopback interface
+		auto lo
+		iface lo inet loopback
+
+		# Wireless interfaces
+		iface wlan0 inet dhcp
+			wireless_mode managed
+			wireless_essid any
+			wpa-driver wext
+			wpa-conf /etc/wpa_supplicant.conf
+
+		iface atml0 inet dhcp
+
+		# Wired or wireless interfaces
+		#auto eth0
+		#iface eth0 inet dhcp
+		#iface eth1 inet dhcp
+
+		auto eth0
+		iface eth0 inet static
+		address 10.242.140.39
+		netmask 255.255.255.128
+		network 10.242.140.0
+		broadcast 10.242.140.127
+		gateway 10.242.140.1
+		dns-nameservers 10.248.2.1 10.223.45.44
+
+		# Ethernet/RNDIS gadget (g_ether)
+		# ... or on host side, usbnet and random hwaddr
+		iface usb0 inet static
+			address 192.168.7.2
+			netmask 255.255.255.0
+			network 192.168.7.0
+			gateway 192.168.7.1
+
+		# Bluetooth networking
+		iface bnep0 inet dhcp
+
+
+environment setup for galileo Full-Image
+========================================
+source /home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/environment-setup-i586-poky-linux
+
+environment setup for galileo SPI-Image
+========================================
+source /home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp-spi/environment-setup-i586-poky-linux-uclibc
+
+
+linux command
+==============
+arp -- displays all the members of the LAN
+
+link yocto queries
+=====================
+https://wiki.yoctoproject.org/wiki/How_do_I
+
+toolchain path
+==============
+<Root>/build_new_2/tmp/sysroots/i686-linux/usr/bin/
+
+path to kernel config file
+===========================
+/home/dharma/Videos/yocto_SPI/build/tmp/sysroots/quark/usr/src/kernel/.config
+
+==> enable dev packages in EXTRA FEATURES in yocto
+
+
+
+Galileo Gen2 Quark FFRD does not support “Resume GPIOSUS” S3 wake events ref:ITS S3
+
+4.4.1.1GPIO == 4.4.1.1GPIO
+5.4.1.1 == 4.4.1.1GPIO
+26 CY8C9540A GPIO/PWM/EEPROM (26.4.1.1)-- 4.4.1.1GPIO
+(26.4.1.4)-- 4.4.1.1GPIO ( 26 CY8C9540A GPIO/PWM/EEPROM )
+27.4.1.1 == 4.4.1.1GPIO ( 27 PCAL9555A GPIO Expander )
+28.4.1.2 == 4.4.1.1GPIO (28 PCA9685 PWM Controller)
+
+31.4.6.1 ==> resume by reset button ==> system getting restarted instead of resume ??
+31.4.6 ==> resume by reset button ==> system getting restarted instead of resume ??
+31.4.4.1 ==> Assert the WAKE_N# PCIe signal by driving to 0 the GPIO of the helper board ??
+31.4.3 ==> No tests for this
+31.4.2.5 ==> accelerometer--only to Clanton Hill-- acc. -- available on gal gen-1 or gen-2 ???
+31.4.2.4 ==> Resume GPIOSUS on Clanton Hill by PowerPath controller ??
+31.4.2.3 ==> Resume GPIOSUS on Cross Hill by eADC module  ??
+31.4.2.2 & 31.4.2.1 tested but failed to resume back ??
+31.4.1 ==> RTC wake alarm -- working
+
+
+30 ADC108S102 lsADC -- ADC on Gen-2	
+
+
+21 == 21.4.1== TI PCM2912A Audio Codec -- tested but error executing "aplay ./filename.wav"
+
+
+ADC execution
+==============
+
+log before sleep
+----------------
+
+root@quark:~# sh adc2.sh  
+.......#setting A0 as ADC input
+adc2.sh: line 5: echo: write error: Device or resource busy
+.......#setting A1 as ADC input
+adc2.sh: line 11: echo: write error: Device or resource busy
+.......#setting A2 as ADC input
+adc2.sh: line 17: echo: write error: Device or resource busy
+.......#setting A3 as ADC input
+adc2.sh: line 23: echo: write error: Device or resource busy
+.......#setting A4 as ADC input
+adc2.sh: line 29: echo: write error: Device or resource busy
+adc2.sh: line 33: echo: write error: Device or resource busy
+.......#setting A5 as ADC input
+adc2.sh: line 43: echo: write error: Device or resource busy
+.......#displaying i/p voltages at all the analog pins....RAW...
+r0=4095
+0
+1
+2730
+2
+1
+1
+1
+.......#displaying i/p voltages at all the analog pins....scale...
+s0=1.220703125
+1.220703125
+1.220703125
+1.220703125
+1.220703125
+1.220703125
+1.220703125
+1.220703125
+expr: non-numeric argument
+V_A0=
+
+
+log after sleep
+---------------
+root@quark:~# sh sleep.sh 
+current date and time = 
+Mon Jan  1 03:17:19 UTC 2001
+epoch time of current time == 
+978319039
+epoch time of wake-up time = 
+978319049
+expected wake-up at = 
+2001-01-01 03:17:29
+[11809.673791] PM: Syncing filesystems ... done.
+[11809.763821] Freezing user space processes ... (elapsed 0.01 seconds) done.
+[11809.782812] Freezing remaining freezable tasks ... (elapsed 0.01 seconds) done.
+[11809.811149] Suspending console(s) (use no_console_suspend to debug)
+Capsule -- capsule variable not set
+[11809.840473] PM: suspend of devices complete after 22.350 msecs
+[11809.841111] PM: late suspend of devices complete after 0.602 msecs
+[11809.842132] ohci_hcd 0000:00:14.4: System wakeup enabled by ACPI
+[11809.860359] ehci-pci 0000:00:14.3: System wakeup enabled by ACPI
+[11809.880285] PM: noirq suspend of devices complete after 39.137 msecs
+[11809.880334] ACPI: Preparing to enter system sleep state S3
+[11809.882080] PM: Saving platform NVS memory
+[11812.790041] ACPI: Low-level resume complete
+[11812.790041] PM: Restoring platform NVS memory
+[11812.837998] ACPI: Waking up from system sleep state S3
+[11812.890358] ehci-pci 0000:00:14.3: System wakeup disabled by ACPI
+[11812.910353] ohci_hcd 0000:00:14.4: System wakeup disabled by ACPI
+[11812.990926] PM: noirq resume of devices complete after 152.148 msecs
+[11812.991667] PM: early resume of devices complete after 0.579 msecs
+[11812.993646] enp0s20f6: device MAC address 98:4f:ee:00:14:9f
+[11813.054173] usb usb1: root hub lost power or was reset
+[11813.054309] usb usb2: root hub lost power or was reset
+[11813.054467] ehci-pci 0000:00:14.3: INSNREG01 is 0x007f007f
+[11813.054488] ehci-pci 0000:00:14.3: INSNREG01 is 0x007f007f
+[11813.285929] PM: resume of devices complete after 294.228 msecs
+[11813.399091] Restarting tasks ... done.
+root@quark:~# sh adc2.sh 
+.......#setting A0 as ADC input
+adc2.sh: line 5: echo: write error: Device or resource busy
+.......#setting A1 as ADC input
+adc2.sh: line 11: echo: write error: Device or resource busy
+.......#setting A2 as ADC input
+adc2.sh: line 17: echo: write error: Device or resource busy
+.......#setting A3 as ADC input
+adc2.sh: line 23: echo: write error: Device or resource busy
+.......#setting A4 as ADC input
+adc2.sh: line 29: echo: write error: Device or resource busy
+adc2.sh: line 33: echo: write error: Device or resource busy
+.......#setting A5 as ADC input
+adc2.sh: line 43: echo: write error: Device or resource busy
+.......#displaying i/p voltages at all the analog pins....RAW...
+r0=4095
+1
+1
+2732
+0
+1
+1
+1
+.......#displaying i/p voltages at all the analog pins....scale...
+s0=1.220703125
+1.220703125
+1.220703125
+1.220703125
+1.220703125
+1.220703125
+1.220703125
+1.220703125
+expr: non-numeric argument
+V_A0=
+
+NOTE:: ##Modify the script (adc1.sh) & use "for" for repetative blocks and try to approximate the  "/sys/bus/iio/devices/iio\:device0/in_voltage1_scale" value to nearest integer
+
+SDIO
+====
+
+Key features choosing a radio module are Host processor, available communications busses, driver architecture, power
+consumption, and data throughput 
+
+SDIO wifi coz low power but disadv is low throughput
+whereas
+Pcie wifi High throughput but disadv is high power consumption
+
+
+http://www.silexamerica.com/products/connectivity-solutions/embedded-wireless/radio-modules/sx-sdcan/
+
+
+http://hub.silexamerica.com/pcie-sdio-wifi?&t=87309&cachebust=1442357549865&hsCtaTracking=3020f214-3b42-48f5-9bd4-d456bd20e9cf%7C02c84b38-b0cf-4de9-9db6-d1a422316061&__hstc=237071327.f1614a4ff2f3689daa4a0681b203afd3.1443530693747.1443530693747.1443530693747.1&__hssc=237071327.2.1443530693748&__hsfp=815895743
+
+
+SDIO 
+======
+
+a test case related power 
+a test case related throughput (by using iperf tool)
+a test case on the distance for which the wifi is accessible
+
+There are SDIO wifi and bluetooth cards in the form-factor of micro,mini & SD cards.Hence if we can receive micro SDIO wifi card we can also test it with galileo gen-1 & gen-2 boards
+
+I think no wifi cards with the form-factor of micro-sd
+
+Note:
+when have only wifi card and downloaded something it should be stored on target boards memory 
+
+Reference:
+http://www.spectec.com.tw/products.html
+http://www.eyefi.com/products
+
+After we receive hardware
+--------------------------
+
+Install "SDIO wifi device" driver on to the target and check whether our target host-controller driver supports it
+
+
+does our SDIO host support both 4-bit and 1-bit SD transfer modes ???
+
+
+SDIO sources
+=============
+./core/sdio.c
+./card/sdio_uart.c
+sdio_bus.c
+sdio_io.c
+core.h
+host.c
+sdio_irq.c
+bus.c
+sdio.c
+sdio_cis.c
+/sdio_ops.h
+
+mmc_sdio_switch_hs -- Test if the card supports high-speed mode and, if so, switch to it
+sdio_enable_hs -- Enable SDIO/combo card's high-speed mode. Return 0/1 if [not]supported
+
+CIS ??
+tuple ??
+
+SDIO functions
+===============
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/core$ readelf -a mmc_core.ko | grep FUNC | grep sdio
+   256: 000080d0    16 FUNC    LOCAL  DEFAULT    2 mmc_sdio_alive
+   257: 000080e0   378 FUNC    LOCAL  DEFAULT    2 mmc_sdio_suspend
+   258: 00008260   196 FUNC    LOCAL  DEFAULT    2 sdio_enable_wide
+   259: 00008330   117 FUNC    LOCAL  DEFAULT    2 sdio_enable_4bit_bus
+   260: 000083b0   160 FUNC    LOCAL  DEFAULT    2 mmc_sdio_switch_hs
+   261: 00008450  2659 FUNC    LOCAL  DEFAULT    2 mmc_sdio_init_card
+   263: 00008ec0   251 FUNC    LOCAL  DEFAULT    2 mmc_sdio_power_restore
+   264: 00008fc0   297 FUNC    LOCAL  DEFAULT    2 mmc_sdio_resume
+   265: 000090f0   114 FUNC    LOCAL  DEFAULT    2 mmc_sdio_remove
+   266: 00009170   169 FUNC    LOCAL  DEFAULT    2 mmc_sdio_detect
+   270: 00009c00   215 FUNC    LOCAL  DEFAULT    2 sdio_bus_remove
+   271: 00009ce0   164 FUNC    LOCAL  DEFAULT    2 sdio_bus_uevent
+   277: 00009ea0    39 FUNC    LOCAL  DEFAULT    2 sdio_release_func
+   278: 00009ed0   100 FUNC    LOCAL  DEFAULT    2 sdio_match_device.isra.5
+   279: 00009f40    24 FUNC    LOCAL  DEFAULT    2 sdio_bus_match
+   280: 00009f60   231 FUNC    LOCAL  DEFAULT    2 sdio_bus_probe
+   297: 0000a4c0   661 FUNC    LOCAL  DEFAULT    2 sdio_read_cis
+   301: 0000ad50   484 FUNC    LOCAL  DEFAULT    2 sdio_io_rw_ext_helper
+   344: 0000b3a0    90 FUNC    LOCAL  DEFAULT    2 sdio_single_irq_set
+   345: 0000b560   620 FUNC    LOCAL  DEFAULT    2 sdio_irq_thread
+   352: 0000b900    24 FUNC    LOCAL  DEFAULT    2 add_quirk_for_sdio_device
+   405: 0000ab60    26 FUNC    GLOBAL DEFAULT    2 sdio_release_host
+   407: 0000a850   139 FUNC    GLOBAL DEFAULT    2 sdio_disable_func
+   410: 0000a8e0   191 FUNC    GLOBAL DEFAULT    2 sdio_set_block_size
+   418: 0000ab40    28 FUNC    GLOBAL DEFAULT    2 sdio_claim_host
+   419: 0000af40    38 FUNC    GLOBAL DEFAULT    2 sdio_memcpy_fromio
+   420: 00009e60    24 FUNC    GLOBAL DEFAULT    2 sdio_register_driver
+   421: 0000af70   141 FUNC    GLOBAL DEFAULT    2 sdio_readw
+   438: 0000a800    79 FUNC    GLOBAL DEFAULT    2 sdio_free_func_cis
+   453: 0000b0c0    64 FUNC    GLOBAL DEFAULT    2 sdio_writew
+   457: 0000b090    43 FUNC    GLOBAL DEFAULT    2 sdio_memcpy_toio
+   467: 0000a760    12 FUNC    GLOBAL DEFAULT    2 sdio_read_common_cis
+   479: 0000ac50   129 FUNC    GLOBAL DEFAULT    2 sdio_f0_readb
+   483: 0000b1a0   501 FUNC    GLOBAL DEFAULT    2 sdio_align_size
+   491: 0000b7d0   260 FUNC    GLOBAL DEFAULT    2 sdio_release_irq
+   501: 0000ab00    51 FUNC    GLOBAL DEFAULT    2 sdio_set_host_pm_flags
+   503: 0000ace0    99 FUNC    GLOBAL DEFAULT    2 sdio_f0_writeb
+   506: 00009e80    20 FUNC    GLOBAL DEFAULT    2 sdio_unregister_driver
+   508: 0000b140    38 FUNC    GLOBAL DEFAULT    2 sdio_readsb
+   522: 0000a7b0    79 FUNC    GLOBAL DEFAULT    2 sdio_read_func_cis
+   530: 0000b000   141 FUNC    GLOBAL DEFAULT    2 sdio_readl
+   545: 00009220  1036 FUNC    GLOBAL DEFAULT    2 mmc_attach_sdio
+   553: 00009b70   115 FUNC    GLOBAL DEFAULT    2 sdio_reset
+   558: 0000a080    87 FUNC    GLOBAL DEFAULT    2 sdio_alloc_func
+   559: 0000b100    63 FUNC    GLOBAL DEFAULT    2 sdio_writel
+   569: 0000aae0    27 FUNC    GLOBAL DEFAULT    2 sdio_get_host_pm_caps
+   602: 0000a140    40 FUNC    GLOBAL DEFAULT    2 sdio_remove_func
+   605: 0000a0e0    85 FUNC    GLOBAL DEFAULT    2 sdio_add_func
+   609: 0000a770    51 FUNC    GLOBAL DEFAULT    2 sdio_free_common_cis
+   614: 0000a050    20 FUNC    GLOBAL DEFAULT    2 sdio_register_bus
+   615: 0000b400   343 FUNC    GLOBAL DEFAULT    2 sdio_claim_irq
+   616: 0000a9a0    69 FUNC    GLOBAL DEFAULT    2 sdio_writeb_readb
+   618: 0000a9f0   238 FUNC    GLOBAL DEFAULT    2 sdio_enable_func
+   619: 0000b170    43 FUNC    GLOBAL DEFAULT    2 sdio_writesb
+   629: 0000a070    15 FUNC    GLOBAL DEFAULT    2 sdio_unregister_bus
+   666: 0000ab80   134 FUNC    GLOBAL DEFAULT    2 sdio_readb
+   667: 0000ac10    64 FUNC    GLOBAL DEFAULT    2 sdio_writeb
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/host$ readelf -a sdhci.ko | grep FUNC | grep sdio
+    12: 00000170   113 FUNC    LOCAL  DEFAULT    2 sdhci_enable_sdio_irq_nol
+    13: 000001f0    22 FUNC    LOCAL  DEFAULT    2 sdhci_enable_sdio_irq
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/image-full/1.0-r0/rootfs/lib/modules/3.8.7-yocto-standard/kernel/drivers/mmc/host$ readelf -a sdhci-pci.ko | grep FUNC | grep sdio
+    12: 000000c0    23 FUNC    LOCAL  DEFAULT    2 mfd_sdio_probe_slot
+
+
+To get additional logs while building image using bitbake 
+============================================================
+
+bitbake -DDD image-full
+or
+bitbake -D image-full
+
+reference: http://elinux.org/Bitbake_Cheat_Sheet
+
+Kernel debugging tips
+======================
+http://elinux.org/Kernel_Debugging_Tips
+
+NOTE:
+-----
+In order to see the kernel messages, just use the $ dmesg i.e to see printk logs go to dmesg
+
+
+**links
+http://www.varsanofiev.com/inside/WritingLinuxSDIODrivers.htm
+http://sibridgetech.blogspot.in/2012/10/sdio-support-in-linux-kernel.html
+
+
+
+Pulse Width Modulation, or PWM, is a technique for getting analog results with digital means ???
+
+
+notes:
+-------
+--> /lib/modules/3.8.7-yocto-standard/modules.dep file has all the drivers enabled for the image and works only if a driver is listed in this file
+
+link
+http://www.malinov.com/Home/sergey-s-blog
+
+to know all the output pins of the gpio
+=======================================
+grep out /sys/class/gpio/gpio*/direction
+
+To know gpio info
+==================
+cat /sys/kernel/debug/gpio
+
+"active_low" ... reads as either 0 (false) or 1 (true). Write
+		any nonzero value to invert the value attribute both
+		for reading and writing. Existing and subsequent
+		poll(2) support configuration via the edge attribute
+		for "rising" and "falling" edges will follow this
+		setting.
+think writing 5V/1 to a pin treats it as 0 i.e I think pull it down by pull-down
+think writing 0V/0 to a pin treats it as 1 i.e I think pull it up by pull-up
+
+
+client tech queries
+======================
+
+CLN.F.HW.SC.IO.SDIO.1
+    CLN.F.HW.SC.IO.SDIO.3 - calculate read & write latency
+
+Approach: no. of blocks read/written divided by total time taken for the operation of either read or write respectively
+[Rafferty, William A] Same as above. Read/write latency tests never implemented. From ITS: “To be defined using iozone, iometer, bonnie++ or similar”
+
+[Nayeem] able to calculate read & write latency using iostat tool 
+
+iostat open : calculating read & write latency by writing data but no idea how much data is written & where exactly on the SD card the data is written to calculate the read & write latency ??
+
+need to cross-compile for the platform
+
+Hence can use dd tool to find latency 
+
+advantage : dd tool is available as part of busy-box
+have the control over the location & amount of data written on the SD card
+
+SO which tool should I proceed dd or iostat ?
+========================================================================================================================================
+
+CLN.eMMC-SD.<softconfig>.memory-15-stress
+CLN.eMMC-SD.<softconfig>.memory-12-perf-writetput
+CLN.eMMC-SD.<softconfig>.memory-11-perf-readtput - calculate read and write throughput
+
+Approach
+using iozone disadv:should compile with yocto,No Idea of where exactly reading and writing on SD card
+using dd
+
+SO which tool should I proceed dd or iozone ?
+
+========================================================================================================================================
+
+CLN.F.HW.SC.IO.SDIO.1 - Writing fails when SD card is write-protect enabled
+
+Blocker: Mechanical write protect tab should be toggled. But micro-SD has no tab to lock the card.
+Approach: Mounting the filesystem read-only and verify that writes to SD card fail
+[Rafferty, William A] Same as above. From ITS test number CLN.eMMC-SD.<softconfig>.memory-17-protecttab:  Create an empty file – should fail
+
+[Nayeem] Write protection can be either by hardware or software
+hardware:Mechanical write protect tab should be toggled. But micro-SD has no tab to lock the card It is only available on SD 
+software:while mounting the filesystem can mount it as read-only or wr_prot_sw_pin_lvl=0 in Present State Register of Host-Controller
+
+In ITS it is talking about hardware write-protect which is failing because no write-protect tab on micro-sd card
+
+So whether we should treat it as test-case failed ?
+and can we develop a new test cases to enable write-protection through software ? 
+
+==========================================================================================================================================
+
+==>observation:cards are mountable only if the filesystem format is FAT32 
+Should we see it as a negative testcase (because if we format the card with other formats it is not getting mounted ) ?
+or
+can we develop a new testcase to detect the filesystem format of the SD card ?
+
+==========================================================================================================================================
+
+observation:
+Can create multiple partitions with different filesystem types,The driver detects all the partitions[has /dev/ entries] but can only mount FAT partition
+
+observation:
+Auto-mounting is working only when booting the board via USB or SPI having SD in the SD-card slot
+
+similar bug : http://www.thinkwiki.org/wiki/How_to_get_the_internal_SD_card_working
+		https://bugs.launchpad.net/ubuntu/+source/hal/+bug/53268
+
+workaround : https://bugs.launchpad.net/ubuntu/+source/hal/+bug/53268
+
+s3
+==
+nayeem@nayeem:~# ./iperf -s -- On host 
+
+root@quark:~# ./iperf -c 10.242.140.98 -- On client(Target board)
+------------------------------------------------------------
+Client connecting to 10.242.140.98, TCP port 5001
+TCP window size: 20.2 KByte (default)
+------------------------------------------------------------
+[  3] local 169.254.140.151 port 60872 connected with 10.242.140.98 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   113 MBytes  94.7 Mbits/sec -- showing bandwidth but how can we say that  data transfer is correct (as in ITS 6.4.1.1  ste 1.6)?
+
+root@quark:~#sh sd.sh
+#### script for suspend and resume -- after resuming from s#
+
+
+root@quark:~# ./iperf -c 10.242.140.98
+---------------------------------------------701633518---------------
+Client connecting to 10.242.140.98, TCP port 5001
+TCP window size: 16.0 KByte (default)
+------------------------------------------------------------
+write1 failed: Broken pipe
+[  3] local 0.0.0.0 port 0 connected with :: port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec  0.00 (null)s  4914567933131706 Bytes/sec --error for some time 
+
+root@quark:~# ./iperf -c 10.242.140.98
+------------------------------------------------------------
+Client connecting to 10.242.140.98, TCP port 5001
+TCP window size: 20.2 KByte (default)
+------------------------------------------------------------
+[  3] local 169.254.140.151 port 60873 connected with 10.242.140.98 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   113 MBytes  94.7 Mbits/sec -- If running command after some gap working fine,Whether this behaviour is acceptable ?
+
+
+==================================================================================================================
+
+
+
+
+S3-PWM
+=======
+exporting pwm channels
+-----------------------
+
+root@quark:~# echo 0 > /sys/class/pwm/pwmchip0/export 
+sh: write error: Invalid argument
+root@quark:~# echo 1 > /sys/class/pwm/pwmchip0/export 
+root@quark:~# echo 2 > /sys/class/pwm/pwmchip0/export 
+sh: write error: Invalid argument
+root@quark:~# echo 3 > /sys/class/pwm/pwmchip0/export 
+root@quark:~# echo 4 > /sys/class/pwm/pwmchip0/export 
+root@quark:~# echo 5 > /sys/class/pwm/pwmchip0/export 
+
+default dutycycle
+-----------------
+
+root@quark:~# cat /sys/class/pwm/pwmchip0/pwm1/duty_cycle
+0
+root@quark:~# cat /sys/class/pwm/pwmchip0/pwm3/duty_cycle
+0
+root@quark:~# cat /sys/class/pwm/pwmchip0/pwm4/duty_cycle
+0
+root@quark:~# cat /sys/class/pwm/pwmchip0/pwm5/duty_cycle
+0
+(or) 
+root@quark:~# cat /sys/class/pwm/pwmchip0/pwm*/duty_cycle
+0
+0
+0
+0
+
+
+$ echo "10" > /sys/class/pwm/pwmchip0/pwm1/duty_cycle 
+error:
+sh: write error: Invalid argument
+
+********************************
+while configuring pwm 1st configure period and the duty cycle	
+
+
+ DMA UART
+==========
+root@quark:~# echo 40 > /sys/class/gpio/export 
+root@quark:~# echo 41 > /sys/class/gpio/export 
+root@quark:~# echo 50 > /sys/class/gpio/export 
+root@quark:~# echo 51 > /sys/class/gpio/export 
+root@quark:~# echo "out" > /sys/class/gpio/gpio40/direction 
+root@quark:~# echo "0" > /sys/class/gpio/gpio40/value  
+root@quark:~# echo "out" > /sys/class/gpio/gpio41/direction 
+root@quark:~# echo "0" > /sys/class/gpio/gpio41/value 
+
+image-full.bb location
+======================
+./meta-iot-devkit/recipes-core/images/image-full.bb
+
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2$ find ./../ -name "alsa-utils*.bb" 
+./../repo-ext/meta-intel-iot-devkit/meta/recipes-multimedia/alsa/alsa-utils-alsaconf_1.0.27.2.bb
+./../repo-ext/meta-intel-iot-devkit/meta/recipes-multimedia/alsa/alsa-utils_1.0.27.2.bb
+./../repo-ext/poky/meta/recipes-multimedia/alsa/alsa-utils-alsaconf_1.0.27.2.bb
+./../repo-ext/poky/meta/recipes-multimedia/alsa/alsa-utils_1.0.27.2.bb
+./../meta/recipes-multimedia/alsa/alsa-utils-alsaconf_1.0.27.2.bb
+./../meta/recipes-multimedia/alsa/alsa-utils_1.0.27.2.bb
+
+
+getting started Intel galileo gen 1
+====================================
+https://www.arduino.cc/en/ArduinoCertified/IntelGalileo
+
+getting started Intel galileo gen 2
+====================================
+https://www.arduino.cc/en/ArduinoCertified/IntelGalileoGen2
+
+
+kernel configuration (.config)
+================================
+cd <ROOT>/tmp/sysroots/quark/usr/src/kernel && make menuconfig
+
+(or)
+
+cd <ROOT>/tmp/sysroots/quark/usr/src/kernel && bitbake -c menuconfig virtual/kernel
+
+configuring wifi for silex SDIO wifi card
+==========================================
+https://developer.ridgerun.com/wiki/index.php/Atheros_AR6003_SDIO_WiFi_Integration
+
+http://blackfin.uclinux.org/doku.php?id=linux-kernel:drivers:wifi_over_sdio
+
+http://trac.gateworks.com/wiki/Yocto/Wireless
+
+SDIO .ko modules names
+=======================
+echo "..unloading all"
+	case $ATH_PLATFORM in
+		LOCAL_i686-SDIO)
+		/sbin/rmmod -w ar6000.ko
+		/sbin/rmmod -w sdio_pcistd_hcd.ko
+		/sbin/rmmod -w sdio_busdriver.ko
+		/sbin/rmmod -w sdio_lib.ko
+		killall recEvent
+
+
+logs
+====
+root@quark:~# cat /sys/kernel/debug/mmc0/ios 
+clock:          0 Hz
+vdd:            0 (invalid)
+bus mode:       1 (open drain)
+chip select:    0 (don't care)
+power mode:     0 (off)
+bus width:      0 (1 bits)
+timing spec:    0 (legacy)
+signal voltage: 0 (3.30 V)
+root@quark:~# cat /sys/kernel/debug/mmc0/clock 
+0
+
+
+notes
+
+/sys/module/ -- has data related to loaded modules
+/sys/kernel/debug/ -- 
+
+
+change debug level
+====================
+echo 8 > /proc/sys/kernel/printk
+
+links
+https://developer.ridgerun.com/wiki/index.php?title=Category:HowTo
+
+iperf works on both windows & Linux and Hence can measure throughput b/w a linux platform & windows platform -- and is written in C-Language
+
+
+Nethogs
+=======
+
+Nethogs is a simple console app that displays bandwidth per process, so you can quickly see who is hogging your network. The simplest invocation specifies your network interface, and then it displays both incoming and outgoing packets:
+
+$ sudo nethogs eth0
+NetHogs version 0.8.0
+  PID USER     PROGRAM                DEV        SENT      RECEIVED       
+1703  carla    ssh                    eth0    9702.096     381.697 KB/sec
+5734  www-data /usr/bin/fie           eth0       1.302      59.301 KB/sec
+13113 carla    ..lib/firefox/firefox  eth0       0.021       0.023 KB/sec
+2462  carla    ..oobar/lib/foobar  eth0       0.000       0.000 KB/sec
+?     root     unknown TCP                       0.000       0.000 KB/sec
+  TOTAL                                       9703.419     441.021 KB/sec 
+Use the -r option to show only received packets, and -s to see only sent packets.
+
+iperf
+=====
+http://www.slashroot.in/iperf-how-test-network-speedperformancebandwidth
+
+
+compiling nethops getting error because it needs library "ibpcap-dev" but is not present in SPI by default
+ ==========================================================================================================
+
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/my_work/nethogs$ make clean
+rm -f packet.o connection.o process.o refresh.o decpcap.o cui.o inode2prog.o conninode.o devices.o
+rm -f nethogs
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/my_work/nethogs$ source /home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp-spi/environment-setup-i586-poky-linux-uclibc
+dharma@dharma-HP-EliteDesk-800-G1-SFF:~/Videos/IOT_Automation/my_work/nethogs$ make
+i586-poky-linux-uclibc-g++  -m32 -march=i586 --sysroot=/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp-spi/sysroots/quark -g -Wall -Wextra -c packet.cpp
+i586-poky-linux-uclibc-g++  -m32 -march=i586 --sysroot=/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp-spi/sysroots/quark -g -Wall -Wextra -c connection.cpp
+i586-poky-linux-uclibc-g++  -m32 -march=i586 --sysroot=/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp-spi/sysroots/quark -g -Wall -Wextra -c process.cpp
+i586-poky-linux-uclibc-g++  -m32 -march=i586 --sysroot=/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp-spi/sysroots/quark -g -Wall -Wextra -c refresh.cpp
+refresh.cpp:9:6: warning: unused parameter 'i' [-Wunused-parameter]
+ void alarm_cb (int i)
+      ^
+i586-poky-linux-uclibc-gcc  -m32 -march=i586 --sysroot=/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp-spi/sysroots/quark -g -Wall -Wextra -c decpcap.c
+decpcap.c:7:18: fatal error: pcap.h: No such file or directory
+ #include <pcap.h>
+                  ^
+compilation terminated.
+make: *** [decpcap.o] Error 1
+
+network monitoring tools 
+------------------------
+http://www.binarytides.com/linux-commands-monitor-network/
+
+
+Vnstat
+=======
+Vnstat is bit different from most of the other tools. It actually runs a background service/daemon and keeps recording the size of data transfer all the time
+
+
+
+check whther a particular GPE is enabled 
+==========================================
+cat /sys/firmware/acpi/interrupts/gpe<no.>
+
+
+cat /sys/firmware/board_data/flash_version ??
+
+check memmap start,stop address and type 
+cat /sys/firmware/memmap/<no>/type
+
+/sys/devices/platfor ??
+
+
+ALSA git
+========
+https://github.com/svenkatr/omap-ddt
+https://github.com/svenkatr/omap-ddt/blob/master/audio-alsa/test_code/scripts/scenarios/L_DD_AUDIO-ALSA_0103_0001e
+
+audio codec logs 
+==================
+
+root@quark:~# aplay test.wav 
+ALSA lib /home/raghuram/intel_gal/meta-clanton_v1.1.0-rc1-dirty/yocto_build/tmp/work/i586-poky-linux/alsa-lib/1.0.27.2-r0/alsa-lib-1.0.27.2/sr'
+ALSA lib /home/raghuram/intel_gal/meta-clanton_v1.1.0-rc1-dirty/yocto_build/tmp/work/i586-poky-linux/alsa-lib/1.0.27.2-r0/alsa-lib-1.0.27.2/sry
+ALSA lib /home/raghuram/intel_gal/meta-clanton_v1.1.0-rc1-dirty/yocto_build/tmp/work/i586-poky-linux/alsa-lib/1.0.27.2-r0/alsa-lib-1.0.27.2/srs
+ALSA lib /home/raghuram/intel_gal/meta-clanton_v1.1.0-rc1-dirty/yocto_build/tmp/work/i586-poky-linux/alsa-lib/1.0.27.2-r0/alsa-lib-1.0.27.2/sry
+ALSA lib /home/raghuram/intel_gal/meta-clanton_v1.1.0-rc1-dirty/yocto_build/tmp/work/i586-poky-linux/alsa-lib/1.0.27.2-r0/alsa-lib-1.0.27.2/sre
+ALSA lib /home/raghuram/intel_gal/meta-clanton_v1.1.0-rc1-dirty/yocto_build/tmp/work/i586-poky-linux/alsa-lib/1.0.27.2-r0/alsa-lib-1.0.27.2/sry
+ALSA lib /home/raghuram/intel_gal/meta-clanton_v1.1.0-rc1-dirty/yocto_build/tmp/work/i586-poky-linux/alsa-lib/1.0.27.2-r0/alsa-lib-1.0.27.2/sry
+ALSA lib /home/raghuram/intel_gal/meta-clanton_v1.1.0-rc1-dirty/yocto_build/tmp/work/i586-poky-linux/alsa-lib/1.0.27.2-r0/alsa-lib-1.0.27.2/srt
+aplay: main:722: audio open error: No such file or directory
+root@quark:~# amixer > dump2.txt 
+amixer: Mixer attach default error: No such file or directory
+
+
+with sound card
+===============
+
+root@quark:~# aplay test.wav 
+Playing WAVE 'test.wav' : Signed 16 bit Little Endian, Rate 44100 Hz, Stereo
+root@quark:~# aplay test.wav 
+Playing WAVE 'test.wav' : Signed 16 bit Little Endian, Rate 44100 Hz, Stereo
+
+root@quark:~# aplay test.wav 
+Playing WAVE 'test.wav' : Signed 16 bit Little Endian, Rate 44100 Hz, Stereo
+root@quark:~# amixer > dump2.txt
+
+
+
+root@quark:~# arecord test.wav 
+Recording WAVE 'test.wav' : Unsigned 8 bit, Rate 8000 Hz, Mono
+
+
+
+log???
+root@quark:~# ^C
+root@quark:~# arecord ./test.wav 
+Recording WAVE './test.wav' : Unsigned 8 bit, Rate 8000 Hz, Mono
+
+
+^CAborted by signal Interrupt...
+arecord: pcm_read:2031: read error: Interrupted system call
+root@quark:~# arecord ./test.wav  -play
+arecord: invalid option -- 'p'
+Try `arecord --help' for more information.
+root@quark:~# arecord ./test.wav  --play                                                                                                       
+Playing WAVE './test.wav' : Unsigned 8 bit, Rate 8000 Hz, Mono
+^CAborted by signal Interrupt...
+root@quark:~# aplay test.wav 
+Playing WAVE 'test.wav' : Unsigned 8 bit, Rate 8000 Hz, Mono
+
+
+^CAborted by signal Interrupt...
+aplay: pcm_write:1939: write error: Interrupted system call
+
+
+quirks-4-bit mode SD
+=======================
+SD
+---
+mmc_sd_init_uhs_card --> 	mmc_app_set_bus_width --> mmc_set_bus_width
+
+SDIO
+-----
+sdio_enable_wide --> ctrl |= SDIO_BUS_WIDTH_4BIT;
+
+cat /sys/module/sdhci/parameters/debug_quirks
+options sdhci debug_quirks="0x00400000" ??
+
+notes: sd card using generic code in sd.c whose definations are present in sd_ops.c
+Functions that are exported(EXPORT_SYMBOL<NAME>) are available for use by modules. Functions that are not exported cannot be invoked from modules
+
+doubt: SD card wear leveling ??
+http://electronics.stackexchange.com/questions/27619/is-it-true-that-a-sd-mmc-card-does-wear-levelling-with-its-own-controller
+
+https://www.riscosopen.org/wiki/documentation/show/SDCard%2FInit            ?????
+http://www.linuxtechtips.com/2013/08/sd-mmc-ms-pro-card-reader-not-working.html ???
+
+list of all SD card bugs
+===========================
+https://bugzilla.kernel.org/buglist.cgi?component=MMC%2FSD&product=Drivers&resolution=---
+
+bugs of other IP's
+==================
+https://bugzilla.kernel.org/describecomponents.cgi?product=Drivers
+
+
+linux SD card sources path or location
+======================================
+/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/drivers/mmc
+
+linux SD card headers path or location
+======================================
+/home/dharma/nay-pc/my_yocto_1/my_yocto_build/meta-clanton_v1.1.0-rc1-dirty/build_new_2/tmp/work/quark-poky-linux/linux-yocto-quark/3.8-r0/linux/include/linux/mmc
+
+/*
+ * Test if the card supports high-speed mode and, if so, switch to it.
+ */
+int mmc_sd_switch_hs(struct mmc_card *card)
+
+
+Host Control Register --> Data Transfer Width (SD1 or SD4) (data_tx_wid): This bit selects the data width
+of the Host Controller. The Host Driver shall set it to match the data width of the SD
+card.
+1 4-bit mode
+0 1-bit mode
+
+notes:EFI file extension is an Extensible Firmware Interface file
+
+to check : Attempting to unload a Linux driver which is in use causes console to freeze
+
+
+
+
+
+
+
+
+
+
