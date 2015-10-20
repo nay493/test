@@ -3143,7 +3143,67 @@ to check : Attempting to unload a Linux driver which is in use causes console to
 github tutorial basics:
 https://guides.github.com/activities/hello-world/
 
+These are the scenarios for which we can develop Negative Test Cases
 
+
+1. while copying data what if trying to copy more than available space or actual memory of the card--expected to fail
+
+2. SD card does not auto-mount when it is hot plugged but it mounts automatically when plugged in and booted for the first time
+ because once removed or hot-plugged have to manually mount the /dev/mmcblk0p1 entry to /media/mmcblk folder.
+
+3.Even the Manual mount of sd card displays its contents only if the SD-card is being formatted with a filesystem type of FAT32
+
+4.Read throughput & write throughput related test cases may fail if the mounting of partition is done as read-only 
+
+5.In order to successfully mount the SD card to a folder need atleast one partition i.e if formatted the all the partitions of the card then mounting of the SD-card is not possible
+
+
+read throughput
+=================
+original
+------
+time dd if=/media/mmcblk0p1/test.img of=/dev/zero bs=$bs count=$count 2>&1 | awk -v bs="$bs" -v count="$count" '/real/{sys_time=($2*60+$3);if(sys_time != 0){tp=(bs*count/sys_time);tpf=tp/1000000;print "readthroughput for block_size="bs" and count="count"  "tpf"\tMB/S"} }' >> readthroughput
+
+modified
+--------
+(time dd if=/media/mmcblk0p1/test.img of=/dev/zero bs=$bs count=$count) |& awk '/real/{print $2}' |& awk -F . '{print $1;print $2;sys_time=$1*60+$2;print "sys_time= "sys_time;tp=(1024*1024/sys_time);print "READ THROUGHPUT="tp "\tbps"; print tpf=tp/1000000; print "READ THROUGHPUT="tpf"\tMB/S"}'
+
+
+writethroughput
+================
+original
+---------
+time dd if=/dev/zero of=/media/mmcblk0p1/test.img bs=$bs count=$count 2>&1 | awk -v bs="$bs" -v count="$count" '/real/{sys_time=($2*60+$3);if(sys_time != 0){tp=(bs*count/sys_time);tpf=tp/1000000;print "writethroughput for block_size="bs" and count="count"  "tpf" \tMB/S"} }' >> throughput
+
+modified
+--------
+
+(time dd if=/dev/zero of=/media/mmcblk0p1/test.img bs=$bs count=$count) |& awk '/real/{print $2}' |& awk -F . '{print $1;print $2;sys_time=$1*60+$2;print "sys_time= "sys_time;tp=(1024*1024/sys_time);print "WRITE THROUGHPUT="tp "\tbps"; print tpf=tp/1000000; print "WRITE THROUGHPUT="tpf"\tMB/S"}'
+
+
+
+SDIO new test cases
+====================
+raw read & raw write ==> writing & reading directly from the device file i.e; /dev/mmcblk1
+test case to check whether swap partition is being created on SD card
+create partitions(single & multiple) 
+remove partitions(single & multiple)
+testing of filesystems i.e by writing from urandom dev file to a file on SD and copy same files to other location on SD and compare
+
+
+What is Swap Space?
+===================
+https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s1-swap-what-is.html
+https://wiki.archlinux.org/index.php/Swap
+
+notes
+=====
+GNU/Linux partitioning tools (e.g. fdisk, cfdisk)	
+generally in pc's harddisk space used as swap partition but on target board has no harddisk & hence can create swap partition on sd card(though not preferable bcoz continuous reading & writing may destroy sd and also has less writing speed compared to reading speed)
+
+Can you use an SD card for swap in Ubuntu 12.04?
+===============================================
+http://askubuntu.com/questions/149680/can-you-use-an-sd-card-for-swap-in-ubuntu-12-04
 
 
 
