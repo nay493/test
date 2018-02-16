@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+        <form name="form1" section="" method="post">
+            <table>
+                <tr>
+                    <td>Enter Name</td>
+                    <td><input type="text" name="t1" id="t1"></td>
+                </tr>
+                <tr>
+                    <td>Enter City</td>
+                    <td><input type="text" name="t2" id="t2"></td>
+                </tr>
+                <tr>
+                    <td>Enter Age</td>
+                    <td><input type="text" name="t3" id="t3"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" name="b1" id="t3" value="Save Data" onclick="aa();"></td>
+                </tr>
+            </table>
+
+</form>
+
+    <script type="text/javascript">
+        function aa() {
+            var xmlhttp;
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "insert.php?nm=" + document.getElementById("t1").value + "set=" + document.getElementById(t2).value + "&age" + document.getElementById("t3").value, fa
+            )
+            xmlhttp.send(null)
+            
+        }
+        </script>
+
+
+</body>
+</html>
